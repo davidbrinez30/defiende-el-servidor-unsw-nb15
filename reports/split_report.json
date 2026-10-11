@@ -1,0 +1,17 @@
+{
+  "train_rows": 140274,
+  "val_rows": 35067,
+  "train_attack_rate": 0.6806,
+  "val_attack_rate": 0.6806,
+  "patrones_distintos_total": 101040,
+  "filas_repetidas_adicionales_total": 74301,
+  "grupos_con_label_normal_y_ataque": 229,
+  "patrones_compartidos_train_val": 0,
+  "metodo": "StratifiedGroupKFold (1 de n pliegues como validación), grupo = hash de las 42 entradas",
+  "excluidas": [
+    "id",
+    "attack_cat"
+  ],
+  "seed": 42,
+  "n_features": 42
+}

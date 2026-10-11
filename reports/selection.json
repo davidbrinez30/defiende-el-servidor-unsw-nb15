@@ -1,0 +1,31 @@
+{
+  "selected_experiment": "E5_hist_gradient_boosting",
+  "model_family": "hist_gradient_boosting",
+  "threshold": 0.6543756842019451,
+  "rule": "mayor recall con FPR<=0.05 en validación; modelo por macro-F1 con ese umbral",
+  "validation_at_threshold": {
+    "recall": 0.9541626513596179,
+    "precision": 0.9759996571379591,
+    "fpr": 0.05,
+    "macro_f1": 0.9464188153034574,
+    "accuracy": 0.9528331479738785,
+    "roc_auc": 0.9935909508197212,
+    "pr_auc": 0.9969871558643412,
+    "tn": 10640.0,
+    "fp": 560.0,
+    "fn": 1094.0,
+    "tp": 22773.0
+  },
+  "runner_up": "E4_random_forest",
+  "macro_f1_diff_vs_runner_up": {
+    "mean": 0.0015701076026383958,
+    "ci95": [
+      -8.636185448635813e-05,
+      0.0032302835309309403
+    ]
+  },
+  "mlflow_run_id": "8580039bd6084eb79e695abdc7a1204a",
+  "mlflow_model_version": "1",
+  "reproduced_validation_probabilities": true,
+  "git_commit_at_selection": "8e44467"
+}
