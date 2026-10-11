@@ -1,0 +1,20 @@
+{
+  "dataset": "UNSW-NB15 (Univ. of New South Wales, ACCS) — partición oficial training/testing",
+  "pagina_oficial": "https://research.unsw.edu.au/projects/unsw-nb15-dataset",
+  "condiciones_de_uso": "Uso académico/investigación; citar los cinco trabajos listados en la página oficial de UNSW.",
+  "descarga_usada": {
+    "origen": "https://github.com/Nir-J/ML-Projects",
+    "commit_fijo": "44bbd02b9e70f74dd915218d5eb702f125341ffc",
+    "ruta": "UNSW-Network_Packet_Classification/",
+    "archivos": {
+      "UNSW_NB15_training-set.csv": {"filas": 175341, "sha256": "bec7dd5ec88dc2a0ccc7a07879d338395ed7421750f675fd0339e07dfe0648fa"},
+      "UNSW_NB15_testing-set.csv":  {"filas": 82332,  "sha256": "734fe6642edf758f7c94d7d9149426b49d202fe8e7bf0bef47392489c3c0a559"}
+    }
+  },
+  "advertencias": [
+    "Los bytes no se autenticaron contra la descarga oficial de UNSW.",
+    "Otra copia pública tiene los nombres training/testing intercambiados; se verifica por número de filas (175.341 / 82.332).",
+    "Es un benchmark histórico de laboratorio: no prueba eficacia sobre una red actual."
+  ],
+  "descargado_el": "2026-10-11"
+}

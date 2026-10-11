@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+mlflow.db
+mlruns/
+mlartifacts/
+.prefect/
+.venv/
+.ipynb_checkpoints/
