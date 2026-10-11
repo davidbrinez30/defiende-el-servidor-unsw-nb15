@@ -8,3 +8,6 @@ pyarrow==25.0.1
 PyYAML==6.0.3
 scikit-learn==1.9.1
 skops==0.16.0
+matplotlib==3.11.2
+nbconvert==7.17.1
+ipykernel==7.4.0

@@ -2,7 +2,7 @@
 
 Solución de ML para distinguir tráfico **normal** de **ataque** (`label`) con trazabilidad completa:
 Git (código y decisiones), DVC (datos, modelo y pipeline), MLflow (experimentos y registro de modelos), Prefect (orquestación).
-Decisión final y resultado en test: [`DECISION.md`](DECISION.md). Comparación de experimentos: [`docs/experimentos.md`](docs/experimentos.md).
+EDA: [`notebooks/01_eda.ipynb`](notebooks/01_eda.ipynb). Decisión final y resultado en test: [`DECISION.md`](DECISION.md). Comparación de experimentos: [`docs/experimentos.md`](docs/experimentos.md).
 
 ## Datos y versión
 Copias públicas fijadas al commit `44bbd02b…` de `Nir-J/ML-Projects` (detalle, SHA-256 y advertencias en `docs/sources.json`).
@@ -17,6 +17,7 @@ src/                   data.py (carga y partición), features.py, experiment_con
                        experiments.py, selection.py, evaluate.py, predict.py, cli.py
 flows/pipeline.py      flow de Prefect (mismas etapas, con estado y logs por tarea)
 reports/               métricas y decisiones (JSON/CSV versionados en Git)
+notebooks/01_eda.ipynb EDA propio (solo entrenamiento) con 5 conclusiones y sus decisiones
 docs/                  fuentes y comparación de experimentos
 models/final_model.joblib   pipeline completo + umbral (versionado con DVC)
 mlflow.db, mlruns/     historial de MLflow (versionado con DVC)
@@ -24,7 +25,7 @@ mlflow.db, mlruns/     historial de MLflow (versionado con DVC)
 
 ## Reproducir desde cero
 ```bash
-git clone <URL-del-repo> && cd defiende-servidor
+git clone https://github.com/davidbrinez30/defiende-el-servidor-unsw-nb15.git && cd defiende-el-servidor-unsw-nb15
 pip install -r requirements.txt          # Python 3.13; ver nota de DVC abajo
 # Opción A: datos y modelo desde el remote de DVC (configurar el remote, ver "Si pierdes tu entorno")
 dvc pull
