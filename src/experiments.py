@@ -71,7 +71,8 @@ def run_all() -> pd.DataFrame:
             pipe = make_pipeline(cfg, num).fit(Xf, yf)
             fit_s = time.time() - t0
             proba = pipe.predict_proba(Xva)[:, 1]
-            np.save(PROCESSED / f"val_proba_{cfg['id']}.npy", proba)
+            (PROCESSED / "val_proba").mkdir(exist_ok=True)
+            np.save(PROCESSED / "val_proba" / f"{cfg['id']}.npy", proba)
 
             at05 = at_threshold(yva, proba, 0.5)
             tf = threshold_free(yva, proba) if len(np.unique(proba)) > 1 else {"roc_auc": 0.5, "pr_auc": float(yva.mean())}

@@ -41,7 +41,7 @@ def select_and_freeze() -> dict:
     for cfg in EXPERIMENTS:
         if cfg["model_family"] == "dummy":
             continue
-        proba = np.load(PROCESSED / f"val_proba_{cfg['id']}.npy")
+        proba = np.load(PROCESSED / "val_proba" / f"{cfg['id']}.npy")
         thr = pick_threshold(yva, proba, MAX_FPR)
         m = at_threshold(yva, proba, thr)
         rows.append({"experiment": cfg["id"], **m, **threshold_free(yva, proba)})
@@ -50,8 +50,8 @@ def select_and_freeze() -> dict:
 
     best = table.iloc[0]
     second = table.iloc[1]
-    pa = np.load(PROCESSED / f"val_proba_{best['experiment']}.npy")
-    pb = np.load(PROCESSED / f"val_proba_{second['experiment']}.npy")
+    pa = np.load(PROCESSED / "val_proba" / f"{best['experiment']}.npy")
+    pb = np.load(PROCESSED / "val_proba" / f"{second['experiment']}.npy")
     diff, ci = paired_bootstrap(yva, pa, pb, best["threshold"], second["threshold"])
 
     # Curva umbral -> (recall, FPR) del modelo elegido, para justificar el equilibrio

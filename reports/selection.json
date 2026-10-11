@@ -24,8 +24,8 @@
       0.0032302835309309403
     ]
   },
-  "mlflow_run_id": "8580039bd6084eb79e695abdc7a1204a",
-  "mlflow_model_version": "1",
+  "mlflow_run_id": "ad9c05db56df408e9b87465cd1a4af2e",
+  "mlflow_model_version": "3",
   "reproduced_validation_probabilities": true,
-  "git_commit_at_selection": "8e44467"
+  "git_commit_at_selection": "64c4944"
 }

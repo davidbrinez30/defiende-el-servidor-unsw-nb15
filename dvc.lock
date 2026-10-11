@@ -1,0 +1,145 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python -m src.cli prepare
+    deps:
+    - path: data/raw/UNSW_NB15_training-set.csv
+      hash: md5
+      md5: e55caabaa6cd4a8f1c06a227bcfababc
+      size: 32293018
+    - path: src/data.py
+      hash: md5
+      md5: 1ded7c2aa33681618ef0388ca15e5600
+      size: 3573
+    params:
+      params.yaml:
+        data:
+          train_csv: data/raw/UNSW_NB15_training-set.csv
+          test_csv: data/raw/UNSW_NB15_testing-set.csv
+          expected_train_rows: 175341
+          expected_test_rows: 82332
+          expected_train_sha256: 
+            bec7dd5ec88dc2a0ccc7a07879d338395ed7421750f675fd0339e07dfe0648fa
+          drop_cols:
+          - id
+          - attack_cat
+          target: label
+          categorical:
+          - proto
+          - service
+          - state
+        seed: 42
+        split:
+          n_splits: 5
+    outs:
+    - path: data/processed/train.parquet
+      hash: md5
+      md5: 7486d22a233d74fae0f038e182cc7c35
+      size: 10907166
+    - path: data/processed/val.parquet
+      hash: md5
+      md5: b1962c0a4bad5c513538ac486b042bfd
+      size: 2800694
+    - path: reports/split_report.json
+      hash: md5
+      md5: 47fd88635bcdb089eb95c2a8c85a19dc
+      size: 460
+  experiments:
+    cmd: python -m src.cli experiments
+    deps:
+    - path: data/processed/train.parquet
+      hash: md5
+      md5: 7486d22a233d74fae0f038e182cc7c35
+      size: 10907166
+    - path: data/processed/val.parquet
+      hash: md5
+      md5: b1962c0a4bad5c513538ac486b042bfd
+      size: 2800694
+    - path: src/experiment_configs.py
+      hash: md5
+      md5: 3d9a966a1770ecb34a86a4d9ab6b4ab1
+      size: 3679
+    - path: src/experiments.py
+      hash: md5
+      md5: 40d00451e3cbb6df3b2394a160510ad0
+      size: 3617
+    - path: src/features.py
+      hash: md5
+      md5: 811e7fada4dc2091a1ca44df8eca7acf
+      size: 1103
+    outs:
+    - path: data/processed/val_proba
+      hash: md5
+      md5: bfd995e857b33ae0283a6453e646368d.dir
+      size: 1964648
+      nfiles: 7
+    - path: reports/experiments.csv
+      hash: md5
+      md5: 4ff8aff0f4b29495230d26c6a561690e
+      size: 1563
+  select:
+    cmd: python -m src.cli select
+    deps:
+    - path: data/processed/train.parquet
+      hash: md5
+      md5: 7486d22a233d74fae0f038e182cc7c35
+      size: 10907166
+    - path: data/processed/val_proba
+      hash: md5
+      md5: bfd995e857b33ae0283a6453e646368d.dir
+      size: 1964648
+      nfiles: 7
+    - path: src/metrics.py
+      hash: md5
+      md5: b53d418086a05acea17ad8a822880080
+      size: 1366
+    - path: src/selection.py
+      hash: md5
+      md5: 583222f1465e5dc5eaa8c7b9895acbc6
+      size: 5894
+    params:
+      params.yaml:
+        selection:
+          max_fpr: 0.05
+          model_metric: macro_f1_at_threshold
+    outs:
+    - path: models/final_model.joblib
+      hash: md5
+      md5: 077ce1c0f406e5842ed7698244f639be
+      size: 1128454
+    - path: reports/selection.json
+      hash: md5
+      md5: 57c55f46ac1ce191fc8540a0443c8a51
+      size: 923
+    - path: reports/threshold_tradeoff_val.csv
+      hash: md5
+      md5: 150923d87e755656eb34561a042cc1bc
+      size: 1119
+    - path: reports/validation_at_chosen_threshold.csv
+      hash: md5
+      md5: bb9ab72684ceef2f5229f9bef4f7f1cc
+      size: 1183
+  evaluate:
+    cmd: python -m src.cli evaluate
+    deps:
+    - path: data/raw/UNSW_NB15_testing-set.csv
+      hash: md5
+      md5: e0beea40262e46168cdb81476dbc27b4
+      size: 15380800
+    - path: models/final_model.joblib
+      hash: md5
+      md5: 077ce1c0f406e5842ed7698244f639be
+      size: 1128454
+    - path: reports/selection.json
+      hash: md5
+      md5: 57c55f46ac1ce191fc8540a0443c8a51
+      size: 923
+    - path: src/evaluate.py
+      hash: md5
+      md5: f57d0595ee1a07d40068b31f03c1dcfd
+      size: 2781
+    outs:
+    - path: reports/test_metrics.json
+      hash: md5
+      md5: f1ee537ba2b68e681e8ecc26012d92eb
+      size: 1324

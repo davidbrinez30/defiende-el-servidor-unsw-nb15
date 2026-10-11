@@ -1,0 +1,57 @@
+# Pipeline reproducible: `dvc repro`. Los CSV crudos los versiona DVC (data/raw/*.dvc).
+stages:
+  prepare:
+    cmd: python -m src.cli prepare
+    deps:
+      - data/raw/UNSW_NB15_training-set.csv
+      - src/data.py
+    params:
+      - seed
+      - split
+      - data
+    outs:
+      - data/processed/train.parquet
+      - data/processed/val.parquet
+    metrics:
+      - reports/split_report.json:
+          cache: false
+  experiments:
+    cmd: python -m src.cli experiments
+    deps:
+      - data/processed/train.parquet
+      - data/processed/val.parquet
+      - src/experiments.py
+      - src/experiment_configs.py
+      - src/features.py
+    outs:
+      - data/processed/val_proba
+      - reports/experiments.csv:
+          cache: false
+  select:
+    cmd: python -m src.cli select
+    deps:
+      - data/processed/val_proba
+      - data/processed/train.parquet
+      - src/selection.py
+      - src/metrics.py
+    params:
+      - selection
+    outs:
+      - models/final_model.joblib
+      - reports/validation_at_chosen_threshold.csv:
+          cache: false
+      - reports/threshold_tradeoff_val.csv:
+          cache: false
+    metrics:
+      - reports/selection.json:
+          cache: false
+  evaluate:
+    cmd: python -m src.cli evaluate
+    deps:
+      - models/final_model.joblib
+      - reports/selection.json
+      - data/raw/UNSW_NB15_testing-set.csv
+      - src/evaluate.py
+    metrics:
+      - reports/test_metrics.json:
+          cache: false
