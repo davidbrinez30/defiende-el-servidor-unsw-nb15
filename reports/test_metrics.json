@@ -1,0 +1,67 @@
+{
+  "model": "E5_hist_gradient_boosting",
+  "threshold": 0.6543756842019451,
+  "test_rows": 82332,
+  "metrics": {
+    "threshold": 0.6543756842019451,
+    "recall": 0.9693373334509838,
+    "precision": 0.8663131123947716,
+    "fpr": 0.18327027027027026,
+    "macro_f1": 0.897919494933164,
+    "accuracy": 0.9007554778215032,
+    "tn": 30219,
+    "fp": 6781,
+    "fn": 1390,
+    "tp": 43942,
+    "roc_auc": 0.9839155751202541,
+    "pr_auc": 0.9882411800260739
+  },
+  "recall_por_familia": {
+    "Analysis": {
+      "recall": 0.9409,
+      "n": 677
+    },
+    "Backdoor": {
+      "recall": 1.0,
+      "n": 583
+    },
+    "DoS": {
+      "recall": 0.9971,
+      "n": 4089
+    },
+    "Exploits": {
+      "recall": 0.9909,
+      "n": 11132
+    },
+    "Fuzzers": {
+      "recall": 0.7989,
+      "n": 6062
+    },
+    "Generic": {
+      "recall": 0.9999,
+      "n": 18871
+    },
+    "Reconnaissance": {
+      "recall": 0.9971,
+      "n": 3496
+    },
+    "Shellcode": {
+      "recall": 0.9841,
+      "n": 378
+    },
+    "Worms": {
+      "recall": 1.0,
+      "n": 44
+    }
+  },
+  "falsas_alarmas_por_servicio_top5": {
+    "-": 5638,
+    "http": 962,
+    "ftp": 178,
+    "radius": 2,
+    "dns": 1
+  },
+  "porcentaje_test_con_patron_visto_en_train": 0.0,
+  "git_commit": "1fe33cf",
+  "mlflow_run_id": "8580039bd6084eb79e695abdc7a1204a"
+}
