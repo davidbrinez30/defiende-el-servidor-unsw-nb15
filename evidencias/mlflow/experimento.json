@@ -1,0 +1,6 @@
+{
+  "nombre": "defiende-el-servidor",
+  "experiment_id": "1",
+  "ejecuciones": 7,
+  "tracking_uri_original": "sqlite:///mlflow.db"
+}

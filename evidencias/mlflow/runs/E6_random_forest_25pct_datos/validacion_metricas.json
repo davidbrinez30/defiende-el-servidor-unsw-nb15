@@ -1,0 +1,32 @@
+{
+  "politica_denominador_cero": "precision = 0 si no se emite ninguna alerta (TP+FP = 0); recall = 0 si no hay ataques reales (TP+FN = 0); FPR = 0 si no hay conexiones normales reales (FP+TN = 0). En validaci\u00f3n y test ninguno de los denominadores es cero.",
+  "umbral": 0.6839073568011816,
+  "validacion_al_umbral": {
+    "umbral": 0.6839073568011816,
+    "recall": 0.9398751414086396,
+    "precision": 0.9756437021572721,
+    "fpr": 0.05,
+    "macro_f1": 0.9358555910893775,
+    "f1_ataque": 0.9574254678930408,
+    "accuracy": 0.9431089058088802,
+    "tp": 22432,
+    "fp": 560,
+    "fn": 1435,
+    "tn": 10640
+  },
+  "validacion_a_0.5": {
+    "umbral": 0.5,
+    "recall": 0.9796790547618051,
+    "precision": 0.9490988796882611,
+    "fpr": 0.11196428571428571,
+    "macro_f1": 0.9418763342406561,
+    "f1_ataque": 0.9641465476362288,
+    "accuracy": 0.9504092166424274,
+    "tp": 23382,
+    "fp": 1254,
+    "fn": 485,
+    "tn": 9946
+  },
+  "roc_auc": 0.9918223683029168,
+  "pr_auc": 0.9961455793934939
+}

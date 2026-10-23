@@ -1,0 +1,77 @@
+{
+  "artefactos": [
+    {
+      "bytes": 5062,
+      "ruta": "modelo/E2_logreg_log1p.joblib",
+      "sha256": "f100fe267dacc5995eed1a0837a92a95100c55e2b92c516fa16a91f9fefeae14"
+    },
+    {
+      "bytes": 280664,
+      "ruta": "validacion/E2_logreg_log1p.npy",
+      "sha256": "1d5ea45af592596fa14bc60cc23b3521459aad396120c8787dd078a18e9573f1"
+    },
+    {
+      "bytes": 1012,
+      "ruta": "validacion/metricas.json",
+      "sha256": "5badda45e4dd0a67af4b5c52b44d76c092a634ac1e079836aed822eff1efb6e5"
+    }
+  ],
+  "estado": "FINISHED",
+  "etiquetas": {
+    "cambio": "Preprocesamiento: aplicar log(1+x) antes de escalar.",
+    "codigo_sin_confirmar": "False",
+    "dvc_original_test_md5": "e0beea40262e46168cdb81476dbc27b4",
+    "dvc_original_train_md5": "e55caabaa6cd4a8f1c06a227bcfababc",
+    "etapa": "experimento",
+    "familia": "regresion_logistica",
+    "git_commit": "68d3332cb384b80686897994b97e0d2dc0b4a740",
+    "hipotesis": "Aplicar log(1+x) antes de escalar mejora la regresión logística porque reduce la influencia de los valores extremos: al umbral de la regla (FPR ~5 %), espero más recall y más macro-F1 que E1.",
+    "preparado_split_assignment.csv_sha256": "ebbfebba19427447215c648187dc32fe9b75e3fd3b06bc0f9cb6ae571992968a",
+    "preparado_train.parquet_sha256": "a37aff7df3de8217800c1736bc4c8ad8ffa6243c93944f27d854088ba1277bd4",
+    "preparado_val.parquet_sha256": "6a3e85ad4a63017a51ce84ae8967badae7a8dba47980572731b9aab9a3936976",
+    "referencia": "E1_logreg_cruda"
+  },
+  "experimento": "E2_logreg_log1p",
+  "fin_utc_ms": 1792795112627,
+  "inicio_utc_ms": 1792795105695,
+  "metricas": {
+    "fit_seconds": 6.747601270675659,
+    "val_accuracy": 0.9242307582627541,
+    "val_f1_ataque": 0.9424854427776695,
+    "val_fn": 2097.0,
+    "val_fp": 560.0,
+    "val_fpr": 0.05,
+    "val_macro_f1": 0.9157428676059881,
+    "val_pr_auc": 0.9933712274010432,
+    "val_precision": 0.9749216300940439,
+    "val_recall": 0.9121380986299074,
+    "val_roc_auc": 0.9866000537203191,
+    "val_t05_accuracy": 0.9391450651609775,
+    "val_t05_f1_ataque": 0.9561662969353381,
+    "val_t05_fn": 592.0,
+    "val_t05_fp": 1542.0,
+    "val_t05_fpr": 0.13767857142857143,
+    "val_t05_macro_f1": 0.9283395587240793,
+    "val_t05_precision": 0.9378651730668494,
+    "val_t05_recall": 0.9751958771525537,
+    "val_t05_tn": 9658.0,
+    "val_t05_tp": 23275.0,
+    "val_tn": 10640.0,
+    "val_tp": 21770.0,
+    "val_umbral": 0.7774031096044294
+  },
+  "modelo_completo_en": "models/runs/E2_logreg_log1p.joblib (versionado con DVC; SHA-256 en artefactos)",
+  "parametros": {
+    "escalado": "True",
+    "estimador": "logistic_regression",
+    "estimador__max_iter": "2000",
+    "estimador__solver": "lbfgs",
+    "filas_entrenamiento": "140274",
+    "filas_validacion": "35067",
+    "fraccion_entrenamiento": "1.0",
+    "log1p": "True",
+    "regla_umbral_max_fpr": "0.05",
+    "semilla": "42"
+  },
+  "run_id": "9c11a62d87ab4109a4bff065f6e4b3e8"
+}

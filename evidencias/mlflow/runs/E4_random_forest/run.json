@@ -1,0 +1,79 @@
+{
+  "artefactos": [
+    {
+      "bytes": 24604392,
+      "ruta": "modelo/E4_random_forest.joblib",
+      "sha256": "54436e5e5df42b8c54b8499a271ff3c2b8bc68cabf3a50498c391926de76957c"
+    },
+    {
+      "bytes": 280664,
+      "ruta": "validacion/E4_random_forest.npy",
+      "sha256": "f592bd4d7a6fea787b8f688ddbd114aba14a43dd57d2cc1079226e6297cf50aa"
+    },
+    {
+      "bytes": 1011,
+      "ruta": "validacion/metricas.json",
+      "sha256": "700659f357dd24bbe4d9785f05a04ac5b6a4fbebf0b81c8145a95ccb06ce4777"
+    }
+  ],
+  "estado": "FINISHED",
+  "etiquetas": {
+    "cambio": "Tipo de modelo: Random Forest en lugar de regresión logística (mismo preprocesamiento que E2).",
+    "codigo_sin_confirmar": "False",
+    "dvc_original_test_md5": "e0beea40262e46168cdb81476dbc27b4",
+    "dvc_original_train_md5": "e55caabaa6cd4a8f1c06a227bcfababc",
+    "etapa": "experimento",
+    "familia": "random_forest",
+    "git_commit": "68d3332cb384b80686897994b97e0d2dc0b4a740",
+    "hipotesis": "Un modelo de árboles captura interacciones entre atributos (el EDA mostró que ninguna variable separa sola). Espero superar claramente a la regresión logística E2: macro-F1 al menos 0,02 más alto al umbral de la regla.",
+    "preparado_split_assignment.csv_sha256": "ebbfebba19427447215c648187dc32fe9b75e3fd3b06bc0f9cb6ae571992968a",
+    "preparado_train.parquet_sha256": "a37aff7df3de8217800c1736bc4c8ad8ffa6243c93944f27d854088ba1277bd4",
+    "preparado_val.parquet_sha256": "6a3e85ad4a63017a51ce84ae8967badae7a8dba47980572731b9aab9a3936976",
+    "referencia": "E2_logreg_log1p"
+  },
+  "experimento": "E4_random_forest",
+  "fin_utc_ms": 1792795143384,
+  "inicio_utc_ms": 1792795123338,
+  "metricas": {
+    "fit_seconds": 17.830365419387817,
+    "val_accuracy": 0.9509795534262983,
+    "val_f1_ataque": 0.9635302853505887,
+    "val_fn": 1159.0,
+    "val_fp": 560.0,
+    "val_fpr": 0.05,
+    "val_macro_f1": 0.944393952623553,
+    "val_pr_auc": 0.9968558165163509,
+    "val_precision": 0.9759326113116726,
+    "val_recall": 0.9514392257091382,
+    "val_roc_auc": 0.9933085918093723,
+    "val_t05_accuracy": 0.9551430119485557,
+    "val_t05_f1_ataque": 0.9674562946105307,
+    "val_t05_fn": 486.0,
+    "val_t05_fp": 1087.0,
+    "val_t05_fpr": 0.09705357142857143,
+    "val_t05_macro_f1": 0.9476485106246837,
+    "val_t05_precision": 0.955574628085663,
+    "val_t05_recall": 0.9796371559056438,
+    "val_t05_tn": 10113.0,
+    "val_t05_tp": 23381.0,
+    "val_tn": 10640.0,
+    "val_tp": 22708.0,
+    "val_umbral": 0.6467569828582359
+  },
+  "modelo_completo_en": "models/runs/E4_random_forest.joblib (versionado con DVC; SHA-256 en artefactos)",
+  "parametros": {
+    "escalado": "True",
+    "estimador": "random_forest",
+    "estimador__min_samples_leaf": "2",
+    "estimador__n_estimators": "200",
+    "estimador__n_jobs": "-1",
+    "estimador__random_state": "42",
+    "filas_entrenamiento": "140274",
+    "filas_validacion": "35067",
+    "fraccion_entrenamiento": "1.0",
+    "log1p": "True",
+    "regla_umbral_max_fpr": "0.05",
+    "semilla": "42"
+  },
+  "run_id": "9054f65fedde4f55a26865794b605678"
+}

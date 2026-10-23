@@ -7,10 +7,14 @@ stages:
       hash: md5
       md5: e55caabaa6cd4a8f1c06a227bcfababc
       size: 32293018
+    - path: src/config.py
+      hash: md5
+      md5: ede5a26f8a6ce4036a734b80fcf5e950
+      size: 698
     - path: src/data.py
       hash: md5
-      md5: 1ded7c2aa33681618ef0388ca15e5600
-      size: 3573
+      md5: e74a40357555f7395869389f81f04f11
+      size: 3356
     params:
       params.yaml:
         data:
@@ -20,10 +24,14 @@ stages:
           expected_test_rows: 82332
           expected_train_sha256: 
             bec7dd5ec88dc2a0ccc7a07879d338395ed7421750f675fd0339e07dfe0648fa
+          expected_test_sha256: 
+            734fe6642edf758f7c94d7d9149426b49d202fe8e7bf0bef47392489c3c0a559
           drop_cols:
           - id
           - attack_cat
+          id_col: id
           target: label
+          positive_class: 1
           categorical:
           - proto
           - service
@@ -32,6 +40,10 @@ stages:
         split:
           n_splits: 5
     outs:
+    - path: data/processed/split_assignment.csv
+      hash: md5
+      md5: 84620a6590a34976659c4b5838afd410
+      size: 7562968
     - path: data/processed/train.parquet
       hash: md5
       md5: 7486d22a233d74fae0f038e182cc7c35
@@ -40,13 +52,13 @@ stages:
       hash: md5
       md5: b1962c0a4bad5c513538ac486b042bfd
       size: 2800694
-    - path: reports/split_report.json
-      hash: md5
-      md5: 47fd88635bcdb089eb95c2a8c85a19dc
-      size: 460
   experiments:
     cmd: python -m src.cli experiments
     deps:
+    - path: configs/experimentos.yaml
+      hash: md5
+      md5: 6fec92ee0c054532321e07a7cb1d732e
+      size: 6500
     - path: data/processed/train.parquet
       hash: md5
       md5: 7486d22a233d74fae0f038e182cc7c35
@@ -55,28 +67,59 @@ stages:
       hash: md5
       md5: b1962c0a4bad5c513538ac486b042bfd
       size: 2800694
-    - path: src/experiment_configs.py
-      hash: md5
-      md5: 3d9a966a1770ecb34a86a4d9ab6b4ab1
-      size: 3679
     - path: src/experiments.py
       hash: md5
-      md5: 40d00451e3cbb6df3b2394a160510ad0
-      size: 3617
+      md5: e80ed254480df1246284fad175895229
+      size: 7393
+    - path: src/exportar.py
+      hash: md5
+      md5: 232caae3dc8b194625d04fcf55d794d3
+      size: 6803
     - path: src/features.py
       hash: md5
-      md5: 811e7fada4dc2091a1ca44df8eca7acf
-      size: 1103
+      md5: acf0fe3390cdc523900b05bd8cc1323a
+      size: 1339
+    - path: src/hipotesis.py
+      hash: md5
+      md5: 795c0e93d15075b50960b682b7480e03
+      size: 2312
+    - path: src/metrics.py
+      hash: md5
+      md5: b4b2cf7f2df0eba8bf322f4b3dc94754
+      size: 2667
+    - path: src/provenance.py
+      hash: md5
+      md5: c768dab78706c8182f93bfd22b8364f7
+      size: 2120
+    params:
+      params.yaml:
+        mlflow:
+          tracking_uri: sqlite:///mlflow.db
+          experiment: defiende-el-servidor
+        seed: 42
+        selection:
+          max_fpr: 0.05
+          bootstrap_resamples: 500
     outs:
     - path: data/processed/val_proba
       hash: md5
-      md5: bfd995e857b33ae0283a6453e646368d.dir
-      size: 1964648
-      nfiles: 7
-    - path: reports/experiments.csv
+      md5: 1eb7aa0e8d56a2122ad1d73d7d6db137.dir
+      size: 1968108
+      nfiles: 8
+    - path: evidencias/experimentos.csv
       hash: md5
-      md5: 4ff8aff0f4b29495230d26c6a561690e
-      size: 1563
+      md5: 87ecf2bcdb81ef2730ccbf4f46848320
+      size: 8678
+    - path: evidencias/mlflow
+      hash: md5
+      md5: 3e5d6a871167dbd7f91bf56a31d1e8cd.dir
+      size: 36880
+      nfiles: 17
+    - path: models/runs
+      hash: md5
+      md5: 18eab630bcce1823227f647fdc319869.dir
+      size: 32454391
+      nfiles: 7
   select:
     cmd: python -m src.cli select
     deps:
@@ -143,3 +186,67 @@ stages:
       hash: md5
       md5: f1ee537ba2b68e681e8ecc26012d92eb
       size: 1324
+  audit:
+    cmd: python -m src.cli audit
+    deps:
+    - path: data/processed/split_assignment.csv
+      hash: md5
+      md5: 84620a6590a34976659c4b5838afd410
+      size: 7562968
+    - path: data/processed/train.parquet
+      hash: md5
+      md5: 7486d22a233d74fae0f038e182cc7c35
+      size: 10907166
+    - path: data/processed/val.parquet
+      hash: md5
+      md5: b1962c0a4bad5c513538ac486b042bfd
+      size: 2800694
+    - path: data/raw/UNSW_NB15_testing-set.csv
+      hash: md5
+      md5: e0beea40262e46168cdb81476dbc27b4
+      size: 15380800
+    - path: data/raw/UNSW_NB15_training-set.csv
+      hash: md5
+      md5: e55caabaa6cd4a8f1c06a227bcfababc
+      size: 32293018
+    - path: docs/sources.json
+      hash: md5
+      md5: 4da866a7cb244d201c7c5dd93eccc787
+      size: 1139
+    - path: src/audit.py
+      hash: md5
+      md5: a8385d073d757a8f988a24e8f44efa0f
+      size: 9682
+    - path: src/data.py
+      hash: md5
+      md5: e74a40357555f7395869389f81f04f11
+      size: 3356
+    params:
+      params.yaml:
+        data:
+          train_csv: data/raw/UNSW_NB15_training-set.csv
+          test_csv: data/raw/UNSW_NB15_testing-set.csv
+          expected_train_rows: 175341
+          expected_test_rows: 82332
+          expected_train_sha256: 
+            bec7dd5ec88dc2a0ccc7a07879d338395ed7421750f675fd0339e07dfe0648fa
+          expected_test_sha256: 
+            734fe6642edf758f7c94d7d9149426b49d202fe8e7bf0bef47392489c3c0a559
+          drop_cols:
+          - id
+          - attack_cat
+          id_col: id
+          target: label
+          positive_class: 1
+          categorical:
+          - proto
+          - service
+          - state
+        seed: 42
+        split:
+          n_splits: 5
+    outs:
+    - path: evidencias/auditoria.json
+      hash: md5
+      md5: b27085b8f6ef052a705fe59cd5b563c5
+      size: 14532

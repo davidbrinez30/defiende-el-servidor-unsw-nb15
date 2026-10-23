@@ -1,0 +1,78 @@
+{
+  "artefactos": [
+    {
+      "bytes": 513767,
+      "ruta": "modelo/E5_hist_gradient_boosting.joblib",
+      "sha256": "be09963fa4689e9d2f7ffad24a217119ab90ca374973156b2fa87d982476864a"
+    },
+    {
+      "bytes": 280664,
+      "ruta": "validacion/E5_hist_gradient_boosting.npy",
+      "sha256": "2f58b9c298457c57745be1d97c44e75da6e4a7d53bc8c2c4d40dfef301cfea78"
+    },
+    {
+      "bytes": 1012,
+      "ruta": "validacion/metricas.json",
+      "sha256": "4aead8ed20819cbf7ba083988fb1cf4d76ef15062e655573db2dc11abffa4a4b"
+    }
+  ],
+  "estado": "FINISHED",
+  "etiquetas": {
+    "cambio": "Aumentar complejidad: boosting de árboles secuenciales en lugar de bosque aleatorio.",
+    "codigo_sin_confirmar": "False",
+    "dvc_original_test_md5": "e0beea40262e46168cdb81476dbc27b4",
+    "dvc_original_train_md5": "e55caabaa6cd4a8f1c06a227bcfababc",
+    "etapa": "experimento",
+    "familia": "hist_gradient_boosting",
+    "git_commit": "68d3332cb384b80686897994b97e0d2dc0b4a740",
+    "hipotesis": "Gradient boosting mejora a Random Forest en ROC-AUC, pero con filas repetidas y etiquetas ambiguas el techo es bajo: la diferencia de macro-F1 con E4 será pequeña (menos de 0,01).",
+    "preparado_split_assignment.csv_sha256": "ebbfebba19427447215c648187dc32fe9b75e3fd3b06bc0f9cb6ae571992968a",
+    "preparado_train.parquet_sha256": "a37aff7df3de8217800c1736bc4c8ad8ffa6243c93944f27d854088ba1277bd4",
+    "preparado_val.parquet_sha256": "6a3e85ad4a63017a51ce84ae8967badae7a8dba47980572731b9aab9a3936976",
+    "referencia": "E4_random_forest"
+  },
+  "experimento": "E5_hist_gradient_boosting",
+  "fin_utc_ms": 1792795158426,
+  "inicio_utc_ms": 1792795143393,
+  "metricas": {
+    "fit_seconds": 14.524932384490967,
+    "val_accuracy": 0.9528331479738785,
+    "val_f1_ataque": 0.9649576271186441,
+    "val_fn": 1094.0,
+    "val_fp": 560.0,
+    "val_fpr": 0.05,
+    "val_macro_f1": 0.9464188153034574,
+    "val_pr_auc": 0.9969871558643412,
+    "val_precision": 0.9759996571379591,
+    "val_recall": 0.9541626513596179,
+    "val_roc_auc": 0.9935909508197212,
+    "val_t05_accuracy": 0.9564262697122651,
+    "val_t05_f1_ataque": 0.9682473712647023,
+    "val_t05_fn": 570.0,
+    "val_t05_fp": 958.0,
+    "val_t05_fpr": 0.08553571428571428,
+    "val_t05_macro_f1": 0.9494153447273903,
+    "val_t05_precision": 0.9605029890744177,
+    "val_t05_recall": 0.9761176519881007,
+    "val_t05_tn": 10242.0,
+    "val_t05_tp": 23297.0,
+    "val_tn": 10640.0,
+    "val_tp": 22773.0,
+    "val_umbral": 0.6543756842019451
+  },
+  "modelo_completo_en": "models/runs/E5_hist_gradient_boosting.joblib (versionado con DVC; SHA-256 en artefactos)",
+  "parametros": {
+    "escalado": "True",
+    "estimador": "hist_gradient_boosting",
+    "estimador__learning_rate": "0.1",
+    "estimador__max_iter": "300",
+    "estimador__random_state": "42",
+    "filas_entrenamiento": "140274",
+    "filas_validacion": "35067",
+    "fraccion_entrenamiento": "1.0",
+    "log1p": "True",
+    "regla_umbral_max_fpr": "0.05",
+    "semilla": "42"
+  },
+  "run_id": "924822b52f714831bf054c763c5adab3"
+}

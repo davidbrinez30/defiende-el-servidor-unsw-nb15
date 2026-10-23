@@ -1,0 +1,77 @@
+{
+  "artefactos": [
+    {
+      "bytes": 4920,
+      "ruta": "modelo/E1_logreg_cruda.joblib",
+      "sha256": "3002fce25880beb6c6af1a370700ee0cfc0da23ccea19a113aee46d944a939a9"
+    },
+    {
+      "bytes": 280664,
+      "ruta": "validacion/E1_logreg_cruda.npy",
+      "sha256": "e3465325bdf34b50677a10e9bed59a5c63e7d76134ff786bb48e5020bc067ea6"
+    },
+    {
+      "bytes": 1010,
+      "ruta": "validacion/metricas.json",
+      "sha256": "39f9220515a5ccbed10c93acfc9fbd8b62330d8ac102280195a1d71df66cdd38"
+    }
+  ],
+  "estado": "FINISHED",
+  "etiquetas": {
+    "cambio": "Primer modelo real: regresión logística sobre variables escaladas, sin transformar las colas.",
+    "codigo_sin_confirmar": "False",
+    "dvc_original_test_md5": "e0beea40262e46168cdb81476dbc27b4",
+    "dvc_original_train_md5": "e55caabaa6cd4a8f1c06a227bcfababc",
+    "etapa": "experimento",
+    "familia": "regresion_logistica",
+    "git_commit": "68d3332cb384b80686897994b97e0d2dc0b4a740",
+    "hipotesis": "Un modelo lineal sobre variables escaladas pero sin transformar (colas largas) supera con claridad al baseline: al umbral de la regla, macro-F1 más de 0,10 por encima de E0 y FPR mucho menor.",
+    "preparado_split_assignment.csv_sha256": "ebbfebba19427447215c648187dc32fe9b75e3fd3b06bc0f9cb6ae571992968a",
+    "preparado_train.parquet_sha256": "a37aff7df3de8217800c1736bc4c8ad8ffa6243c93944f27d854088ba1277bd4",
+    "preparado_val.parquet_sha256": "6a3e85ad4a63017a51ce84ae8967badae7a8dba47980572731b9aab9a3936976",
+    "referencia": "E0_baseline_siempre_ataque"
+  },
+  "experimento": "E1_logreg_cruda",
+  "fin_utc_ms": 1792795105688,
+  "inicio_utc_ms": 1792795098497,
+  "metricas": {
+    "fit_seconds": 7.013110399246216,
+    "val_accuracy": 0.914420965580175,
+    "val_f1_ataque": 0.9345517196257606,
+    "val_fn": 2441.0,
+    "val_fp": 560.0,
+    "val_fpr": 0.05,
+    "val_macro_f1": 0.9054785697506917,
+    "val_pr_auc": 0.9916487805710752,
+    "val_precision": 0.9745292458837442,
+    "val_recall": 0.8977248921104454,
+    "val_roc_auc": 0.9843009549946428,
+    "val_t05_accuracy": 0.9351241908346879,
+    "val_t05_f1_ataque": 0.953994863602354,
+    "val_t05_fn": 279.0,
+    "val_t05_fp": 1996.0,
+    "val_t05_fpr": 0.17821428571428571,
+    "val_t05_macro_f1": 0.9220005744787383,
+    "val_t05_precision": 0.9219824890556598,
+    "val_t05_recall": 0.9883102191310177,
+    "val_t05_tn": 9204.0,
+    "val_t05_tp": 23588.0,
+    "val_tn": 10640.0,
+    "val_tp": 21426.0,
+    "val_umbral": 0.7775115816329539
+  },
+  "modelo_completo_en": "models/runs/E1_logreg_cruda.joblib (versionado con DVC; SHA-256 en artefactos)",
+  "parametros": {
+    "escalado": "True",
+    "estimador": "logistic_regression",
+    "estimador__max_iter": "2000",
+    "estimador__solver": "lbfgs",
+    "filas_entrenamiento": "140274",
+    "filas_validacion": "35067",
+    "fraccion_entrenamiento": "1.0",
+    "log1p": "False",
+    "regla_umbral_max_fpr": "0.05",
+    "semilla": "42"
+  },
+  "run_id": "cf16b6b22ed64d1a90c53d73f256d720"
+}
