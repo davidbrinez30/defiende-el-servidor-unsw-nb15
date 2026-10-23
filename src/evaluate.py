@@ -103,17 +103,21 @@ def evaluar_test() -> dict:
         else:
             por_cat[cat] = {"filas": int(len(idx)), "detectados": int(pred[idx].sum()), "recall": float(pred[idx].mean())}
 
-    peor = met["macro_f1"] < val["macro_f1"]
+    es = lambda x, d=2: f"{x:.{d}f}".replace(".", ",")
+    meta = PARAMS["selection"]["max_fpr"]
+    vistas_, nuevas_ = sub["entradas_ya_vistas_en_entrenamiento_o_validacion"], sub["entradas_nuevas"]
     lectura = (
-        f"Con el umbral fijado en validación, el test dio recall {100 * met['recall']:.2f} %, FPR {100 * met['fpr']:.2f} % y macro-F1 "
-        f"{met['macro_f1']:.4f}; en validación fueron {100 * val['recall']:.2f} %, {100 * val['fpr']:.2f} % y {val['macro_f1']:.4f}. "
-        + (f"La FPR del test supera la meta de {100 * PARAMS['selection']['max_fpr']:.0f} % fijada en validación. "
-           if met["fpr"] > PARAMS["selection"]["max_fpr"] else
-           f"La FPR del test se mantiene dentro de la meta de {100 * PARAMS['selection']['max_fpr']:.0f} %. ")
-        + f"El {sub['entradas_nuevas']['porcentaje_del_test']:.1f} % de las filas del test tiene entradas que no aparecen en "
-          "entrenamiento ni validación; esa diferencia de distribución explica por qué la validación "
-        + ("fue más optimista que el test." if peor else "no fue más optimista que el test.")
-        + " El resultado se conserva tal cual; no se ajustó nada después de verlo."
+        f"Con el umbral fijado en validación, el test dio recall {es(100 * met['recall'])} %, FPR {es(100 * met['fpr'])} % y "
+        f"macro-F1 {es(met['macro_f1'], 4)}; en validación fueron {es(100 * val['recall'])} %, {es(100 * val['fpr'])} % y "
+        f"{es(val['macro_f1'], 4)}. "
+        + (f"La FPR del test supera la meta de {es(100 * meta, 0)} % fijada en validación: el umbral elegido allí no controla las falsas "
+           "alarmas en el test. " if met["fpr"] > meta else
+           f"La FPR del test se mantiene dentro de la meta de {es(100 * meta, 0)} %. ")
+        + f"El {es(nuevas_['porcentaje_del_test'], 1)} % de las filas del test tiene entradas que no aparecen en entrenamiento ni validación, "
+          f"pero eso no basta para explicar la diferencia: la FPR fue {es(100 * nuevas_['fpr'])} % en las entradas nuevas y "
+          f"{es(100 * vistas_['fpr'])} % en las ya vistas. La validación, partición "
+          "aleatoria agrupada del mismo archivo, no reproduce el cambio entre las particiones publicadas por UNSW. "
+          "El resultado se conserva tal cual; no se ajustó nada después de verlo."
     )
     git = git_info()
     res = {
