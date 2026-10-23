@@ -1,0 +1,172 @@
+{
+  "criterio": "Mayor macro-F1 en VALIDACIÓN al umbral de la regla (mayor recall con FPR <= 5 %). Desempate: mayor ROC-AUC, luego orden alfabético. El test no interviene.",
+  "candidatos_excluidos": [
+    "E0_baseline_siempre_ataque"
+  ],
+  "ranking_validacion": [
+    {
+      "experimento": "E5_hist_gradient_boosting",
+      "familia": "hist_gradient_boosting",
+      "run_id": "924822b52f714831bf054c763c5adab3",
+      "umbral": 0.6543756842019451,
+      "recall": 0.954162651359618,
+      "precision": 0.9759996571379592,
+      "fpr": 0.05,
+      "macro_f1": 0.9464188153034574,
+      "accuracy": 0.9528331479738784,
+      "roc_auc": 0.9935909508197212,
+      "pr_auc": 0.9969871558643412,
+      "fit_seconds": 14.5
+    },
+    {
+      "experimento": "E4_random_forest",
+      "familia": "random_forest",
+      "run_id": "9054f65fedde4f55a26865794b605678",
+      "umbral": 0.6467569828582359,
+      "recall": 0.9514392257091382,
+      "precision": 0.9759326113116726,
+      "fpr": 0.05,
+      "macro_f1": 0.944393952623553,
+      "accuracy": 0.9509795534262984,
+      "roc_auc": 0.9933085918093724,
+      "pr_auc": 0.9968558165163508,
+      "fit_seconds": 17.8
+    },
+    {
+      "experimento": "E6_random_forest_25pct_datos",
+      "familia": "random_forest",
+      "run_id": "fff113c4ebe9475582a293d0a26d9df0",
+      "umbral": 0.6839073568011816,
+      "recall": 0.9398751414086396,
+      "precision": 0.975643702157272,
+      "fpr": 0.05,
+      "macro_f1": 0.9358555910893775,
+      "accuracy": 0.9431089058088802,
+      "roc_auc": 0.9918223683029168,
+      "pr_auc": 0.996145579393494,
+      "fit_seconds": 4.0
+    },
+    {
+      "experimento": "E3_logreg_log1p_balanceada",
+      "familia": "regresion_logistica",
+      "run_id": "266be72058c74bfc9733331b7b04805f",
+      "umbral": 0.6201292868249982,
+      "recall": 0.912640884903842,
+      "precision": 0.9749350998120132,
+      "fpr": 0.05,
+      "macro_f1": 0.9161031271914284,
+      "accuracy": 0.9245729603330768,
+      "roc_auc": 0.9867613007200616,
+      "pr_auc": 0.993492708674429,
+      "fit_seconds": 10.5
+    },
+    {
+      "experimento": "E2_logreg_log1p",
+      "familia": "regresion_logistica",
+      "run_id": "9c11a62d87ab4109a4bff065f6e4b3e8",
+      "umbral": 0.7774031096044294,
+      "recall": 0.9121380986299074,
+      "precision": 0.974921630094044,
+      "fpr": 0.05,
+      "macro_f1": 0.915742867605988,
+      "accuracy": 0.924230758262754,
+      "roc_auc": 0.9866000537203192,
+      "pr_auc": 0.9933712274010432,
+      "fit_seconds": 6.7
+    },
+    {
+      "experimento": "E1_logreg_cruda",
+      "familia": "regresion_logistica",
+      "run_id": "cf16b6b22ed64d1a90c53d73f256d720",
+      "umbral": 0.7775115816329539,
+      "recall": 0.8977248921104454,
+      "precision": 0.9745292458837442,
+      "fpr": 0.05,
+      "macro_f1": 0.9054785697506916,
+      "accuracy": 0.914420965580175,
+      "roc_auc": 0.9843009549946428,
+      "pr_auc": 0.9916487805710752,
+      "fit_seconds": 7.0
+    }
+  ],
+  "excluidos": [
+    {
+      "experimento": "E0_baseline_siempre_ataque",
+      "familia": "baseline",
+      "run_id": "dd710b1d7a274048804b22992387c22a",
+      "umbral": 0.5,
+      "recall": 1.0,
+      "precision": 0.6806114010323095,
+      "fpr": 1.0,
+      "macro_f1": 0.4049784504700173,
+      "accuracy": 0.6806114010323095,
+      "roc_auc": 0.5,
+      "pr_auc": 0.6806114010323095,
+      "fit_seconds": 0.5
+    }
+  ],
+  "elegido": {
+    "experimento": "E5_hist_gradient_boosting",
+    "familia": "hist_gradient_boosting",
+    "run_id": "924822b52f714831bf054c763c5adab3",
+    "umbral": 0.6543756842019451,
+    "recall": 0.954162651359618,
+    "precision": 0.9759996571379592,
+    "fpr": 0.05,
+    "macro_f1": 0.9464188153034574,
+    "accuracy": 0.9528331479738784,
+    "roc_auc": 0.9935909508197212,
+    "pr_auc": 0.9969871558643412,
+    "fit_seconds": 14.5
+  },
+  "segundo_mejor": {
+    "experimento": "E4_random_forest",
+    "macro_f1": 0.944393952623553
+  },
+  "diferencia_macro_f1_vs_segundo": {
+    "media_bootstrap": 0.0020853239535801047,
+    "ic95": [
+      0.0003899955121833193,
+      0.0037383375911683326
+    ],
+    "remuestreos": 500,
+    "lectura": "el intervalo no incluye 0: la ventaja del elegido sobre el segundo es distinguible en validación"
+  },
+  "cambio_respecto_a_v1": {
+    "descripcion": "Tipo de modelo (regresión logística -> modelo de árboles); misma regla de umbral y mismo preprocesamiento.",
+    "v1_experimento": "E2_logreg_log1p",
+    "metricas": {
+      "recall": {
+        "v1": 0.9121380986299074,
+        "v2": 0.954162651359618,
+        "diferencia": 0.04202455272971062,
+        "efecto": "mejora"
+      },
+      "precision": {
+        "v1": 0.974921630094044,
+        "v2": 0.9759996571379592,
+        "diferencia": 0.0010780270439152417,
+        "efecto": "mejora"
+      },
+      "fpr": {
+        "v1": 0.05,
+        "v2": 0.05,
+        "diferencia": 0.0,
+        "efecto": "sin cambio"
+      },
+      "macro_f1": {
+        "v1": 0.915742867605988,
+        "v2": 0.9464188153034574,
+        "diferencia": 0.030675947697469397,
+        "efecto": "mejora"
+      },
+      "accuracy": {
+        "v1": 0.924230758262754,
+        "v2": 0.9528331479738784,
+        "diferencia": 0.028602389711124387,
+        "efecto": "mejora"
+      }
+    }
+  },
+  "test": "No usado en esta decisión. Se evalúa una sola vez después de congelar."
+}

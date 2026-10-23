@@ -292,3 +292,56 @@ stages:
       md5: d2267d8477c67bb4143d6f67f4e5dccf.dir
       size: 336173
       nfiles: 3
+  release_v2:
+    cmd: python -m src.cli release v2
+    deps:
+    - path: configs/versiones.yaml
+      hash: md5
+      md5: 84a476479c330b52a4b922e84ae1a312
+      size: 1094
+    - path: data/processed/val.parquet
+      hash: md5
+      md5: b1962c0a4bad5c513538ac486b042bfd
+      size: 2800694
+    - path: data/processed/val_proba
+      hash: md5
+      md5: 1eb7aa0e8d56a2122ad1d73d7d6db137.dir
+      size: 1968108
+      nfiles: 8
+    - path: evidencias/recuperacion/entradas_validacion.csv
+      hash: md5
+      md5: 25b785070e525b49c40c918a0f360bb6
+      size: 10683
+    - path: models/runs
+      hash: md5
+      md5: 18eab630bcce1823227f647fdc319869.dir
+      size: 32454391
+      nfiles: 7
+    - path: src/modelio.py
+      hash: md5
+      md5: c3251d9e294bb96e9bea7b329760fb6b
+      size: 1549
+    - path: src/release.py
+      hash: md5
+      md5: e6591e68a2fd622fa5422a88d553e85a
+      size: 11171
+    params:
+      params.yaml:
+        seed: 42
+        selection:
+          max_fpr: 0.05
+          bootstrap_resamples: 500
+    outs:
+    - path: evidencias/recuperacion/salida_antes_v2.csv
+      hash: md5
+      md5: d96649055db08b14e921b3677b3aa1f9
+      size: 2099
+    - path: evidencias/seleccion_validacion.json
+      hash: md5
+      md5: d216d91b1bb10162063f4024f352497b
+      size: 5365
+    - path: models/releases/v2
+      hash: md5
+      md5: 8a0b44b49d9406f99c18bb83b9196c61.dir
+      size: 2925495
+      nfiles: 3
