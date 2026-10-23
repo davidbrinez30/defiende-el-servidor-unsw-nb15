@@ -57,7 +57,7 @@ def estilo(ax):
 
 
 def fig_experimentos(exp: pd.DataFrame, v2_id: str) -> str:
-    d = exp.sort_values("recall")
+    d = exp[~exp["id"].str.startswith("E0")].sort_values("recall")
     fig, ax = plt.subplots(figsize=(4.3, 2.5))
     y = range(len(d))
     ax.hlines(y, 0.85, d["recall"], color=GRIS, linewidth=1.2)
@@ -106,7 +106,7 @@ CSS = """
 body { font-family: Inter, 'DejaVu Sans', sans-serif; font-size: 8.9pt; line-height: 1.38; color: #0b0b0b; margin: 0; }
 h1 { font-size: 16pt; margin: 0 0 2pt; letter-spacing: -0.2pt; }
 .sub { color: #52514e; font-size: 8.5pt; margin-bottom: 7pt; }
-h2 { font-size: 10.5pt; margin: 9pt 0 3pt; padding-bottom: 1.5pt; border-bottom: 1px solid #d9d8d3; }
+h2 { break-after: avoid; font-size: 10.5pt; margin: 9pt 0 3pt; padding-bottom: 1.5pt; border-bottom: 1px solid #d9d8d3; }
 p { margin: 0 0 4pt; }
 table { border-collapse: collapse; width: 100%; margin: 3pt 0 5pt; font-size: 7.7pt; }
 th { text-align: left; font-weight: 600; color: #52514e; border-bottom: 1px solid #52514e; padding: 2pt 4pt; }
@@ -158,6 +158,8 @@ def construir() -> str:
     c_ = c2["costos_frente_a_v1"]
     cat = test["por_familia_de_ataque"]
     peor_cat = min((k for k in cat if k != "Normal"), key=lambda k: cat[k]["recall"])
+    n_conf = int((exp['hipotesis_confirmada'] == 'si').sum())
+    resto = min(v['recall'] for k, v in cat.items() if k not in ('Normal', peor_cat))
     img1, img2 = fig_experimentos(exp, c2["experimento"]), fig_val_test(v2, tm)
 
     return f"""<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Defiende el servidor — informe</title><style>{CSS}</style></head><body>
@@ -193,7 +195,7 @@ Métricas con ataque como clase positiva, en el umbral de cada experimento (mayo
 {filas_exp}</table>
 <div class="fig"><figure><img src="data:image/png;base64,{img1}"><figcaption>Fig. 1. Recall en validación con la FPR fijada en 5 % (todas las ejecuciones comparten partición).</figcaption></figure>
 <div style="flex:1;font-size:8.3pt"><p><b>Lectura.</b> El preprocesamiento (log(1+x), E2) y los árboles (E4, E5) mejoran de forma clara y con costos distintos; el <i>class_weight</i> (E3) cambia el punto de operación a umbral 0,5 pero no el orden de las puntuaciones; con 25 % de los datos (E6) se pierde poco ({es(exp.set_index('id').loc['E4_random_forest','macro_f1'] - exp.set_index('id').loc['E6_random_forest_25pct_datos','macro_f1'], 4)} de macro-F1) y el entrenamiento es unas {es(exp.set_index('id').loc['E4_random_forest','segundos_entrenamiento'] / exp.set_index('id').loc['E6_random_forest_25pct_datos','segundos_entrenamiento'], 1)} veces más rápido.
-Las siete hipótesis se cumplieron según su criterio (<code>experimentos.csv</code>), lo que debe leerse con cautela: se escribieron conociendo una iteración previa del proyecto (§6).</p></div></div>
+{n_conf} de {len(exp)} hipótesis se cumplieron según su criterio (<code>experimentos.csv</code>){' — todas —' if n_conf == len(exp) else ''}; debe leerse con cautela: se escribieron conociendo una iteración previa del proyecto (§6).</p></div></div>
 
 <h2>3. Versiones v1 y v2 y elección del umbral</h2>
 <p><b>Umbral.</b> Regla declarada antes de ver resultados: <i>entre los umbrales con FPR ≤ 5 % en validación, el de mayor recall</i>; se predice ataque si <code>score_attack ≥ umbral</code>. Se prefirió a 0,5 porque 0,5 deja una FPR de {pct(c2['metricas_validacion']['a_0.5_referencia']['fpr'])} en v2 ({pct(c1['metricas_validacion']['a_0.5_referencia']['fpr'])} en v1) y una falsa alarma tiene costo operativo.
@@ -215,7 +217,7 @@ el entrenamiento de {es(c_['segundos_entrenamiento']['v1'], 1)} s a {es(c_['segu
 <tr><td>VP / FP / FN / VN</td><td class=n colspan=2>{miles(cm['tp'])} / {miles(cm['fp'])} / {miles(cm['fn'])} / {miles(cm['tn'])}</td></tr></table></div></div>
 <div class="aviso"><b>El resultado empeora y se conserva.</b> La FPR pasa de 5 % a {pct(tm['fpr'])}: el umbral de validación no controla las falsas alarmas en el test. No se debe solo a entradas desconocidas:
 la FPR fue {pct(sub['entradas_nuevas']['fpr'])} en las entradas nuevas y {pct(sub['entradas_ya_vistas_en_entrenamiento_o_validacion']['fpr'])} en las ya vistas. La validación (partición aleatoria agrupada del mismo archivo) no reproduce el cambio entre las particiones publicadas.
-Por familia de ataque, el menor recall es <i>{peor_cat}</i> ({pct(cat[peor_cat]['recall'])}); el resto supera 94 %. Las conclusiones se limitan a estas particiones de un benchmark histórico.</div>
+Por familia de ataque, el menor recall es <i>{peor_cat}</i> ({pct(cat[peor_cat]['recall'])}); el resto supera {es(100 * resto, 0)} %. Las conclusiones se limitan a estas particiones de un benchmark histórico.</div>
 
 <h2>5. Trazabilidad y recuperación</h2>
 <p>Cadena: <b>commit de Git → referencia DVC → run ID de MLflow → revisión de Hugging Face</b>. v1: tag <code>v1</code>, run <code>{c1['mlflow']['run_id'][:8]}…</code>, HF <code>{hf['v1']['commit_sha'][:10]}…</code>, modelo <code>{c1['modelo_sha256'][:10]}…</code>.
@@ -229,7 +231,7 @@ y_pred idénticas y diferencia máxima de puntuación {max(d['diferencia_maxima_
 <ul>
 <li>Benchmark de 2015 en laboratorio; copia de un mirror sin autenticar contra UNSW. No demuestra eficacia sobre una red actual.</li>
 <li>Una sola partición de validación; la ventaja de v2 sobre Random Forest es pequeña. Los IC de test tratan filas como independientes y subestiman la incertidumbre (hay entradas repetidas).</li>
-<li>El test difiere de la validación y la FPR se triplica: antes de usarlo habría que fijar el umbral con datos del dominio de despliegue o controlar la FPR con un conjunto de calibración independiente.</li>
+<li>El test difiere de la validación y la FPR se multiplica por {es(tm['fpr'] / 0.05, 1)}: antes de usarlo habría que fijar el umbral con datos del dominio de despliegue o controlar la FPR con un conjunto de calibración independiente.</li>
 <li>Historia: el repositorio conserva una primera iteración con un pipeline distinto que ya había evaluado el test con una configuración parecida; se reconstruyó todo y ningún modelo ni umbral se eligió con el test, pero las hipótesis se escribieron conociendo esos resultados previos.</li>
 <li>Los paquetes skops no son reproducibles byte a byte al reconstruirse (identificadores de objeto, fechas): el hash se fija al empaquetar y las versiones se recuperan por DVC/Hugging Face.</li>
 <li>Uso de IA: el asistente Claude escribió y depuró código y documentación bajo dirección del estudiante; las cifras salen de scripts y la recuperación se verificó de forma automática (ver <code>entrega.md</code>).</li>
