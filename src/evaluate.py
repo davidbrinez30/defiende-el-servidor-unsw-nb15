@@ -134,7 +134,8 @@ def evaluar_test() -> dict:
         "matriz_confusion": {**conf, "disposicion": "tp: ataque detectado; fp: normal marcado como ataque; fn: ataque no detectado; tn: normal aceptado"},
         "metricas": met,
         "ic95_bootstrap": {**_ic(y, pred, PARAMS["selection"]["bootstrap_resamples"], PARAMS["seed"]),
-                           "nota": f"{PARAMS['selection']['bootstrap_resamples']} remuestreos de filas, umbral fijo"},
+                           "nota": f"{PARAMS['selection']['bootstrap_resamples']} remuestreos de filas con umbral fijo; tratan las filas como "
+                                   "independientes, así que subestiman la incertidumbre cuando hay entradas repetidas"},
         "metricas_ranking": threshold_free(y, score),
         "referencia_umbral_0.5_no_usado": at_threshold(y, score, 0.5),
         "validacion_al_mismo_umbral": val,
