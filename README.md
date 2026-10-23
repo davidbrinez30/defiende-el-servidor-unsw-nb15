@@ -27,7 +27,8 @@ mlflow.db, mlruns/     historial de MLflow (versionado con DVC)
 ```bash
 git clone https://github.com/davidbrinez30/defiende-el-servidor-unsw-nb15.git && cd defiende-el-servidor-unsw-nb15
 pip install -r requirements.txt          # Python 3.13; ver nota de DVC abajo
-# Opción A: datos y modelo desde el remote de DVC (configurar el remote, ver "Si pierdes tu entorno")
+# Opción A: datos y modelo desde el remote de DVC. El remote es la carpeta `dvc-remote-defiende`, que debe estar
+#           junto a la carpeta del repo (ruta relativa en .dvc/config); si la tienes en otro sitio: dvc remote modify local_storage url <ruta>
 dvc pull
 # Opción B: descargar los CSV (los comandos curl del enunciado) en data/raw/ y reproducir todo
 dvc repro                                # prepara, entrena los 7 experimentos, elige y evalúa
@@ -58,7 +59,7 @@ rm -rf data/raw/*.csv models/final_model.joblib && dvc pull
 | Prefect | ¿Qué ocurrió cuando ejecuté el pipeline? | Cada etapa es una tarea con estado `Completed`/`Failed` y su error. |
 
 ## Decisiones de método (resumen)
-- **Sin fuga:** se excluyen `id` y `attack_cat`; el hash de las 42 entradas define grupos y la validación se separa con `StratifiedGroupKFold` (0 patrones compartidos). Transformaciones y codificadores se ajustan solo con entrenamiento (viven dentro del `Pipeline`).
+- **Sin fuga:** se excluyen `id` (AUC 0,95 contra la etiqueta: el archivo viene ordenado, ver `notebooks/01_eda.ipynb` sección 0) y `attack_cat`; el hash de las 42 entradas define grupos y la validación se separa con `StratifiedGroupKFold` (0 patrones compartidos). Transformaciones y codificadores se ajustan solo con entrenamiento (viven dentro del `Pipeline`).
 - **Test reservado:** solo lo toca `src/evaluate.py`, una vez, con modelo y umbral congelados; el código se niega a reevaluar (salvo dentro de `dvc repro`, donde reproduce el mismo resultado congelado).
 - **Umbral:** regla declarada de antemano en `params.yaml` (mayor recall con FPR ≤ 5 % en validación).
 
