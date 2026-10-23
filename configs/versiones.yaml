@@ -1,0 +1,18 @@
+# Definición de las dos versiones de la solución.
+#
+# v1  = primera solución funcional, fijada de antemano: la regresión logística con log(1+x) (E2).
+# v2  = revisión basada en los experimentos. El modelo se elige AUTOMÁTICAMENTE por macro-F1 en VALIDACIÓN entre los
+#       experimentos con modelo real; el test no interviene. Cambio respecto a v1: SOLO el tipo de modelo
+#       (la regla del umbral, el preprocesamiento y las particiones son las mismas).
+versiones:
+  v1:
+    descripcion: "Primera solución funcional: regresión logística con log(1+x) y escalado."
+    experimento: E2_logreg_log1p
+    seleccion: fija
+  v2:
+    descripcion: "Revisión: modelo elegido por macro-F1 en validación entre todos los experimentos con modelo real."
+    seleccion: por_validacion
+    candidatos_excluidos: [E0_baseline_siempre_ataque]
+    cambio_respecto_a_v1: "Tipo de modelo (regresión logística -> modelo de árboles); misma regla de umbral y mismo preprocesamiento."
+
+regla_umbral: "Mayor recall con tasa de falsos positivos <= 5 % en validación (params.yaml: selection.max_fpr)."

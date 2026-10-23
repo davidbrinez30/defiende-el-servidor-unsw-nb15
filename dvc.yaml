@@ -1,10 +1,13 @@
-# Pipeline reproducible: `dvc repro`. Los CSV crudos los versiona DVC (data/raw/*.dvc).
+# Pipeline reproducible: `dvc repro`. Los CSV originales los versiona DVC con data/raw/*.dvc.
+# Para recuperar sin entrenar:  dvc pull   (datos originales, preparados y modelos de v1/v2)
+# Se ejecuta por etapas (ver README): prepare -> audit -> experiments -> release_v1 -> release_v2 -> [congelar] -> evaluate
 stages:
   prepare:
     cmd: python -m src.cli prepare
     deps:
       - data/raw/UNSW_NB15_training-set.csv
       - src/data.py
+      - src/config.py
     params:
       - seed
       - split
@@ -12,46 +15,98 @@ stages:
     outs:
       - data/processed/train.parquet
       - data/processed/val.parquet
-    metrics:
-      - reports/split_report.json:
+      - data/processed/split_assignment.csv
+
+  audit:
+    cmd: python -m src.cli audit
+    deps:
+      - data/raw/UNSW_NB15_training-set.csv
+      - data/raw/UNSW_NB15_testing-set.csv
+      - data/processed/train.parquet
+      - data/processed/val.parquet
+      - data/processed/split_assignment.csv
+      - docs/sources.json
+      - src/audit.py
+      - src/data.py
+    params:
+      - seed
+      - split
+      - data
+    outs:
+      - evidencias/auditoria.json:
           cache: false
+
   experiments:
     cmd: python -m src.cli experiments
     deps:
       - data/processed/train.parquet
       - data/processed/val.parquet
+      - configs/experimentos.yaml
       - src/experiments.py
-      - src/experiment_configs.py
+      - src/exportar.py
+      - src/hipotesis.py
       - src/features.py
+      - src/metrics.py
+      - src/provenance.py
+    params:
+      - seed
+      - selection
+      - mlflow
     outs:
       - data/processed/val_proba
-      - reports/experiments.csv:
+      - models/runs
+      - evidencias/experimentos.csv:
           cache: false
-  select:
-    cmd: python -m src.cli select
+      - evidencias/mlflow:
+          cache: false
+
+  release_v1:
+    cmd: python -m src.cli release v1
     deps:
       - data/processed/val_proba
-      - data/processed/train.parquet
-      - src/selection.py
-      - src/metrics.py
+      - models/runs/E2_logreg_log1p.joblib
+      - data/processed/val.parquet
+      - configs/versiones.yaml
+      - src/release.py
+      - src/modelio.py
+    outs:
+      - models/releases/v1
+      - evidencias/recuperacion/entradas_validacion.csv:
+          cache: false
+      - evidencias/recuperacion/salida_antes_v1.csv:
+          cache: false
+
+  release_v2:
+    cmd: python -m src.cli release v2
+    deps:
+      - data/processed/val_proba
+      - models/runs
+      - data/processed/val.parquet
+      - evidencias/recuperacion/entradas_validacion.csv
+      - configs/versiones.yaml
+      - src/release.py
+      - src/modelio.py
     params:
+      - seed
       - selection
     outs:
-      - models/final_model.joblib
-      - reports/validation_at_chosen_threshold.csv:
+      - models/releases/v2
+      - evidencias/seleccion_validacion.json:
           cache: false
-      - reports/threshold_tradeoff_val.csv:
+      - evidencias/recuperacion/salida_antes_v2.csv:
           cache: false
-    metrics:
-      - reports/selection.json:
-          cache: false
+
   evaluate:
     cmd: python -m src.cli evaluate
     deps:
-      - models/final_model.joblib
-      - reports/selection.json
+      - models/releases/v2
+      - evidencias/seleccion.json
       - data/raw/UNSW_NB15_testing-set.csv
+      - data/processed/split_assignment.csv
       - src/evaluate.py
-    metrics:
-      - reports/test_metrics.json:
+      - src/modelio.py
+    outs:
+      - evidencias/metricas-test.json:
+          cache: false
+      - evidencias/predicciones-test.csv:
           cache: false

@@ -1,0 +1,6 @@
+# Opcional (no hace falta para recuperar ni reproducir): notebook de EDA y flow de Prefect.
+# pip install -r requirements.txt -r requirements-extra.txt
+prefect==3.8.8
+matplotlib==3.11.2
+nbconvert==7.17.1
+ipykernel==7.4.0

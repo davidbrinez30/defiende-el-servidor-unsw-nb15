@@ -1,4 +1,6 @@
 [core]
-    remote = local_storage
-['remote "local_storage"']
-    url = ../../dvc-remote-defiende
+    remote = almacen_http
+['remote "almacen_http"']
+    url = https://raw.githubusercontent.com/davidbrinez30/defiende-el-servidor-dvc-storage/main
+['remote "almacen_local"']
+    url = ../../defiende-el-servidor-dvc-storage

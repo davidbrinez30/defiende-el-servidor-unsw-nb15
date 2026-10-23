@@ -1,31 +1,31 @@
-# Parámetros del proyecto. DVC los rastrea: cambiar un valor invalida las etapas que dependen de él.
+# Parámetros globales. DVC los rastrea: cambiar un valor invalida las etapas que dependen de él.
 seed: 42
 
 data:
-  # Los CSV del taller (copias fijadas a un commit de Nir-J/ML-Projects). Ver docs/sources.json.
   train_csv: data/raw/UNSW_NB15_training-set.csv
   test_csv: data/raw/UNSW_NB15_testing-set.csv
   expected_train_rows: 175341
   expected_test_rows: 82332
   expected_train_sha256: bec7dd5ec88dc2a0ccc7a07879d338395ed7421750f675fd0339e07dfe0648fa
-  # Columnas que NO son entradas: id (orden del archivo), label (respuesta), attack_cat (respuesta relacionada = fuga)
+  expected_test_sha256: 734fe6642edf758f7c94d7d9149426b49d202fe8e7bf0bef47392489c3c0a559
+  # Columnas que NO son entradas del modelo: id (identifica filas), attack_cat (revela la respuesta), label (respuesta).
   drop_cols: [id, attack_cat]
+  id_col: id
   target: label
+  positive_class: 1          # 1 = ataque, 0 = normal
   categorical: [proto, service, state]
 
 split:
-  # Validación = 1 de 5 pliegues, agrupando por patrón de entradas idénticas (hash de las 42 variables)
-  # para que un mismo vector de entrada nunca quede en entrenamiento y validación a la vez.
+  # Validación = 1 de 5 pliegues. Los grupos son los vectores de entrada idénticos (hash de las 42 variables),
+  # de modo que una misma entrada nunca queda repartida entre entrenamiento y validación.
   n_splits: 5
 
 selection:
-  # Regla de umbral DECLARADA ANTES de ver resultados:
-  # entre los umbrales con tasa de falsos positivos (FPR) en validación <= max_fpr, elegir el de mayor recall.
+  # Regla de umbral, declarada ANTES de ver resultados: entre los umbrales con tasa de falsos positivos (FPR) en
+  # validación <= max_fpr, elegir el de mayor recall. El modelo de v2 se elige por macro-F1 en validación con ese umbral.
   max_fpr: 0.05
-  # El modelo se elige por macro-F1 en validación (con su umbral ya optimizado por la regla anterior).
-  model_metric: macro_f1_at_threshold
+  bootstrap_resamples: 500
 
 mlflow:
   tracking_uri: sqlite:///mlflow.db
   experiment: defiende-el-servidor
-  registered_model: unsw-nb15-detector

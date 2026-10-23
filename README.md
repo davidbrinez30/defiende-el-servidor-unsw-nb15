@@ -1,73 +1,142 @@
-# Defiende el servidor — detección de tráfico de ataque en UNSW-NB15
+# Defiende el servidor — normal vs. ataque con UNSW-NB15
 
-Solución de ML para distinguir tráfico **normal** de **ataque** (`label`) con trazabilidad completa:
-Git (código y decisiones), DVC (datos, modelo y pipeline), MLflow (experimentos y registro de modelos), Prefect (orquestación).
-EDA: [`notebooks/01_eda.ipynb`](notebooks/01_eda.ipynb). Decisión final y resultado en test: [`DECISION.md`](DECISION.md). Comparación de experimentos: [`docs/experimentos.md`](docs/experimentos.md).
+Taller de MLOps (Universidad Externado de Colombia, 2026-II). Clasifica conexiones de red como **normal (0)** o **ataque (1)** y,
+sobre todo, demuestra que cada versión del modelo se puede **identificar, comparar y recuperar**: de qué código, datos y
+experimento viene, y que predice igual después de recuperarla en un entorno nuevo.
 
-## Datos y versión
-Copias públicas fijadas al commit `44bbd02b…` de `Nir-J/ML-Projects` (detalle, SHA-256 y advertencias en `docs/sources.json`).
-Origen oficial y condiciones de uso: https://research.unsw.edu.au/projects/unsw-nb15-dataset (uso académico; citar los trabajos listados allí).
-El pipeline **verifica** 175.341 filas de entrenamiento, 82.332 de prueba y el SHA-256 del entrenamiento; si no coinciden, se detiene con un mensaje claro.
+> Índice de evidencias, identificadores (commits, run IDs, SHA de Hugging Face, hashes) y declaración de uso de IA: **[`entrega.md`](entrega.md)**.
+> Informe: `informe.pdf` (en el ZIP de entrega). Procedencia de los datos: [`docs/sources.json`](docs/sources.json).
+
+| Qué se versiona | Herramienta | Dónde |
+|---|---|---|
+| Código, configuraciones, documentación, referencias DVC | Git / GitHub | este repositorio; tags `v1`, `v2`, `congelado` |
+| Datos originales y preparados, modelos de cada versión | DVC | `data/raw/*.dvc`, `dvc.yaml`, `dvc.lock`; almacenamiento HTTP público (ver más abajo) |
+| Experimentos (hipótesis, parámetros, métricas, modelo completo) | MLflow | `evidencias/mlflow/` (exportación) y `mlflow.db` local recreable |
+| Modelos publicados (v1, v2) con model card | Hugging Face Hub | https://huggingface.co/brinez/defiende-el-servidor-unsw-nb15 |
+
+Cadena de trazabilidad: **commit de Git → referencia DVC → run ID de MLflow → revisión (SHA) de Hugging Face**.
+
+## Requisitos
+
+- **Python 3.12 o 3.13** (probado con 3.13). Git. ~2 GB libres. Internet para `pip`, DVC (GitHub) y Hugging Face.
+- Dependencias fijadas en [`requirements.txt`](requirements.txt). Opcionales (EDA y Prefect): `requirements-extra.txt`.
+
+## 1. Instalar
+
+```bash
+git clone https://github.com/davidbrinez30/defiende-el-servidor-unsw-nb15.git
+cd defiende-el-servidor-unsw-nb15
+python -m venv .venv
+source .venv/bin/activate            # Windows PowerShell:  .venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+## 2. Recuperar los datos (DVC)
+
+Los datos **no están en Git**: Git guarda solo punteros (`.dvc`, `dvc.lock`) y DVC los descarga del almacenamiento entregado,
+un repositorio público de GitHub usado como remote HTTP de solo lectura
+(`https://raw.githubusercontent.com/davidbrinez30/defiende-el-servidor-dvc-storage/main`, configurado en `.dvc/config`).
+
+```bash
+dvc pull data/raw/UNSW_NB15_training-set.csv.dvc data/raw/UNSW_NB15_testing-set.csv.dvc   # versión 1 de los datos: originales
+dvc pull prepare                                                                           # versión 2: preparados y particiones
+python -m src.cli verificar                                                                # compara SHA-256 de lo recuperado
+```
+
+- **Originales:** `UNSW_NB15_training-set.csv` (175.341 filas) y `UNSW_NB15_testing-set.csv` (82.332), con los SHA-256 del enunciado.
+- **Preparados:** `data/processed/train.parquet` (140.274 filas), `val.parquet` (35.067) y `split_assignment.csv` (fila → partición, semilla 42), producidos por la etapa `prepare`.
+- Si el almacenamiento HTTP no estuviera disponible, el respaldo (ZIP aparte, ver `entrega.md`) se usa como remote local:
+  descomprímelo en una carpeta, `dvc remote add -d respaldo <carpeta>` y `dvc pull`.
+
+## 3. Recuperar y usar una versión del modelo
+
+Cada versión (v1, v2) tiene su commit de código (tag), su referencia de datos y una **revisión inmutable en Hugging Face**
+(SHA completo en `evidencias/hf_publicacion.json` y en `entrega.md`). Con DVC:
+
+```bash
+git checkout v2                       # o v1: el código y las referencias de esa versión
+dvc pull release_v2                   # models/releases/v2/{modelo.skops, config.json, requirements.txt}
+python -m src.predict --release models/releases/v2 --input evidencias/recuperacion/entradas_validacion.csv --output salida_v2.csv
+```
+
+Con Hugging Face, por SHA completo de la revisión (sin DVC):
+
+```bash
+python -m src.predict --hf-revision <SHA_COMPLETO_DE_V1_O_V2> --input evidencias/recuperacion/entradas_validacion.csv --output salida.csv
+```
+
+La salida trae `score_attack` (probabilidad de ataque) y `y_pred` (1 si `score_attack >= umbral`; el umbral va en `config.json`).
+La entrada necesita las 42 columnas predictoras de UNSW-NB15 (se ignoran `id`, `label`, `attack_cat`).
+`modelo.skops` se carga declarando como confiables solo tipos internos de scikit-learn; `src/modelio.py` lo comprueba y verifica el hash.
+
+## 4. Reproducir un experimento
+
+```bash
+python -m src.cli experimento E2_logreg_log1p    # uno solo; usa un almacén MLflow de prueba y no toca el pipeline
+python -m src.cli experimento E4_random_forest
+mlflow ui --backend-store-uri sqlite:///mlflow_prueba.db
+```
+
+Requiere haber hecho `dvc pull prepare`. Los siete experimentos (E0–E6, con hipótesis y criterio medible) están en
+[`configs/experimentos.yaml`](configs/experimentos.yaml); la comparación completa, en `evidencias/experimentos.csv`.
+Todos usan **las mismas particiones**; el preprocesamiento (log(1+x), escalado, codificación) está dentro del `Pipeline`
+y se ajusta solo con entrenamiento.
+
+## 5. Reproducir todo el pipeline
+
+```bash
+dvc pull data/raw/UNSW_NB15_training-set.csv.dvc data/raw/UNSW_NB15_testing-set.csv.dvc
+dvc repro prepare audit experiments release_v1 release_v2
+```
+
+| Etapa | Qué hace | Salidas |
+|---|---|---|
+| `prepare` | Partición entrenamiento/validación sin repartir entradas idénticas (`StratifiedGroupKFold`, semilla 42) | `data/processed/*` |
+| `audit` | Fuentes, SHA-256, filas, clases, faltantes, duplicados, contradicciones, cruces con el test | `evidencias/auditoria.json` |
+| `experiments` | Corre E0–E6 y los registra en MLflow; exporta la tabla y los registros | `models/runs/`, `evidencias/experimentos.csv`, `evidencias/mlflow/` |
+| `release_v1` / `release_v2` | v1 fija (E2); v2 elegida con validación; empaquetado en skops con `config.json` | `models/releases/vN`, `evidencias/seleccion_validacion.json` |
+| *(congelar)* | `python -m src.cli congelar` escribe `evidencias/seleccion.json`; se confirma con el tag `congelado` | `evidencias/seleccion.json` |
+| `evaluate` | **Una sola vez**, v2 congelada sobre el test completo | `evidencias/metricas-test.json`, `predicciones-test.csv` |
+
+Recalcular las métricas de test solo desde las predicciones: `python -m src.cli recalcular`.
+Prefect es opcional (`requirements-extra.txt`, `python -m flows.pipeline`).
+
+## 6. Prueba de recuperación en un entorno nuevo
+
+```bash
+python scripts/recuperar.py --revision main
+```
+
+Clona el repositorio en una carpeta nueva, crea un entorno virtual nuevo, instala las dependencias fijadas, recupera con DVC desde
+el almacenamiento entregado (caché vacía), descarga v1 y v2 de Hugging Face por SHA completo, predice sobre 50 filas fijas de validación
+y compara con las salidas guardadas antes. El registro queda en `evidencias/recuperacion/`.
 
 ## Estructura
+
 ```
-params.yaml            parámetros y regla de umbral (DVC los rastrea)
-dvc.yaml / dvc.lock    pipeline reproducible: prepare -> experiments -> select -> evaluate
-src/                   data.py (carga y partición), features.py, experiment_configs.py (HIPÓTESIS),
-                       experiments.py, selection.py, evaluate.py, predict.py, cli.py
-flows/pipeline.py      flow de Prefect (mismas etapas, con estado y logs por tarea)
-reports/               métricas y decisiones (JSON/CSV versionados en Git)
-notebooks/01_eda.ipynb EDA propio (solo entrenamiento) con 5 conclusiones y sus decisiones
-docs/                  fuentes y comparación de experimentos
-models/final_model.joblib   pipeline completo + umbral (versionado con DVC)
-mlflow.db, mlruns/     historial de MLflow (versionado con DVC)
+configs/        experimentos.yaml (hipótesis), versiones.yaml (v1/v2), equipo.yaml (equipo y plataformas)
+params.yaml     semilla, rutas, hashes esperados, regla de umbral (DVC lo rastrea)
+src/            data, features, audit, experiments, hipotesis, exportar, release, modelcard, congelar, evaluate, modelio, predict, verificar, cli
+scripts/        publicar_hf.py (publica v1/v2 en Hugging Face), recuperar.py (prueba de recuperación)
+docs/           sources.json (procedencia), model_cards/ (cards de v1 y v2)
+evidencias/     auditoria, experimentos, seleccion, metricas-test, predicciones-test, mlflow/, recuperacion/
+notebooks/      01_eda.ipynb (EDA propio, solo con entrenamiento)
 ```
 
-## Reproducir desde cero
-```bash
-git clone https://github.com/davidbrinez30/defiende-el-servidor-unsw-nb15.git && cd defiende-el-servidor-unsw-nb15
-pip install -r requirements.txt          # Python 3.13; ver nota de DVC abajo
-# Opción A: datos y modelo desde el remote de DVC. El remote es la carpeta `dvc-remote-defiende`, que debe estar
-#           junto a la carpeta del repo (ruta relativa en .dvc/config); si la tienes en otro sitio: dvc remote modify local_storage url <ruta>
-dvc pull
-# Opción B: descargar los CSV (los comandos curl del enunciado) en data/raw/ y reproducir todo
-dvc repro                                # prepara, entrena los 7 experimentos, elige y evalúa
-```
-Nota: `dvc` requiere `antlr4-python3-runtime==4.9.*`; en Python 3.13 su compilación puede fallar con setuptools antiguo.
-Si ocurre, instalarlo antes con una versión de `setuptools` reciente o desde una rueda precompilada.
+## Decisiones de método en una línea
 
-## Demostración
-```bash
-# 1) Pipeline orquestado (estados por tarea; el test se evalúa una sola vez y se conserva el resultado)
-python -m flows.pipeline
-# 2) Falla visible: oculta el CSV de entrenamiento y la tarea 1 queda en Failed con el motivo
-# 3) Predicciones desde una versión guardada
-python -m src.predict --input datos.csv --source file                  # models/final_model.joblib (DVC)
-python -m src.predict --input datos.csv --source mlflow --version 3    # Model Registry de MLflow
-# 4) Interfaz de MLflow
-mlflow ui --backend-store-uri sqlite:///mlflow.db
-# 5) Recuperación con DVC
-rm -rf data/raw/*.csv models/final_model.joblib && dvc pull
-```
+- `id`, `attack_cat` y `label` **no** son entradas. Las filas con entradas idénticas nunca se reparten entre entrenamiento y validación.
+- Umbral (regla escrita antes de ver resultados): **mayor recall con tasa de falsos positivos ≤ 5 % en validación**. v2 = mejor macro-F1 en validación con ese umbral.
+- El test se audita (esquema, duplicados, cruces) pero no se usa para elegir nada; se evalúa una vez con la solución congelada.
+- Denominadores cero: precision = 0 si no hay alertas; recall = 0 si no hay ataques reales; FPR = 0 si no hay normales reales.
 
-## Cómo responde a las preguntas de la guía
-| Herramienta | Pregunta | Respuesta |
-|---|---|---|
-| Git | ¿Qué cambio produjo esta versión? | Las hipótesis están en un commit anterior a los resultados; `reports/selection.json` guarda el commit de la selección. |
-| DVC | ¿Puedo recuperar los mismos datos y modelo? | `data/raw/*.dvc`, `dvc.lock`, `models/final_model.joblib` y `mlflow.db`/`mlruns` en el remote. |
-| MLflow | ¿Qué ejecución produjo el modelo elegido? | `reports/selection.json` → `mlflow_run_id` y `mlflow_model_version`; el umbral va como etiqueta de la versión. |
-| Prefect | ¿Qué ocurrió cuando ejecuté el pipeline? | Cada etapa es una tarea con estado `Completed`/`Failed` y su error. |
+## Seguridad
 
-## Decisiones de método (resumen)
-- **Sin fuga:** se excluyen `id` (AUC 0,95 contra la etiqueta: el archivo viene ordenado, ver `notebooks/01_eda.ipynb` sección 0) y `attack_cat`; el hash de las 42 entradas define grupos y la validación se separa con `StratifiedGroupKFold` (0 patrones compartidos). Transformaciones y codificadores se ajustan solo con entrenamiento (viven dentro del `Pipeline`).
-- **Test reservado:** solo lo toca `src/evaluate.py`, una vez, con modelo y umbral congelados; el código se niega a reevaluar (salvo dentro de `dvc repro`, donde reproduce el mismo resultado congelado).
-- **Umbral:** regla declarada de antemano en `params.yaml` (mayor recall con FPR ≤ 5 % en validación).
+No hay tokens ni contraseñas en el repositorio. Para publicar en Hugging Face, el token (permiso *Write*) se define solo como
+variable de entorno `HF_TOKEN` en la máquina de quien publica.
 
-## Honestidad sobre el registro de MLflow
-- `dvc repro` y el flow de Prefect vuelven a entrenar, así que MLflow acumula **ejecuciones repetidas** (mismas métricas) y **3 versiones** del modelo registrado, idénticas en comportamiento. La versión de referencia y su run están en `reports/selection.json`.
-- Hay una ejecución `FINAL_…` fallida al inicio: MLflow/skops bloquearon por seguridad un tipo interno de HistGradientBoosting; se declaró de confianza solo ese tipo (`TRUSTED_TYPES` en `src/selection.py`).
+## Datos y licencia
 
-## Si pierdes tu entorno local
-Necesitas: (1) el repositorio Git (código, `dvc.lock`, reportes); (2) un **remote de DVC fuera de tu máquina** — en este trabajo se usó un remote local
-(`~/dvc-remote-defiende`) para la demostración; para que otra persona reconstruya, súbelo a un remote compartido
-(`dvc remote add -d storage s3://… | gdrive://…` y `dvc push`); (3) `pip install -r requirements.txt`. Los CSV también se pueden descargar de nuevo con los `curl` del enunciado: el pipeline comprueba filas y SHA-256.
+UNSW-NB15 © UNSW Canberra (Moustafa y Slay, 2015); uso académico, citar los trabajos de la [página oficial](https://research.unsw.edu.au/projects/unsw-nb15-dataset).
+La copia usada proviene de un mirror de terceros fijado por commit (`docs/sources.json`); los SHA-256 coinciden con los del enunciado,
+pero no están autenticados contra el archivo oficial. Es un benchmark histórico: no demuestra eficacia sobre una red actual.

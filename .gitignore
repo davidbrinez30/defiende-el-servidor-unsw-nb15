@@ -2,6 +2,16 @@ __pycache__/
 *.pyc
 .prefect/
 .venv/
+venv/
 .ipynb_checkpoints/
-/mlflow.db
-/mlruns
+# Almacén local de MLflow: se recrea con `dvc repro experiments`; la evidencia portátil está en evidencias/mlflow/
+mlflow.db
+mlruns/
+mlflow_prueba.db
+models/pruebas/
+# Entornos y secretos: nunca al repositorio
+.env
+*.token
+.dvc/config.local
+# Salidas temporales de la prueba de recuperación en entorno nuevo
+.recuperacion-tmp/

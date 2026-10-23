@@ -1,0 +1,19 @@
+# Datos del equipo y de las plataformas. Se usan para generar entrega.md, el informe y el mensaje de entrega.
+# Edita solo este archivo (nunca pongas tokens ni contraseñas aquí).
+integrantes:
+  - nombre: "[COMPLETAR nombre completo]"
+    grupo: "[COMPLETAR A o B]"
+    contribucion: "Trabajo individual: todo el proyecto."
+github:
+  usuario: davidbrinez30
+  repo_codigo: defiende-el-servidor-unsw-nb15
+  repo_almacenamiento_dvc: defiende-el-servidor-dvc-storage
+huggingface:
+  usuario: brinez
+  repo_modelos: defiende-el-servidor-unsw-nb15
+declaracion_ia: >
+  Se usó el asistente Claude (Anthropic) para escribir y depurar el código, redactar la documentación y preparar el
+  informe, bajo mi dirección. Las cifras de los documentos se generan con scripts desde los archivos de evidencia,
+  y el pipeline y la prueba de recuperación se ejecutaron y comprobaron de forma automática. Asumo el contenido y
+  puedo explicar las decisiones. No se adaptó código externo con licencia propia: se usan scikit-learn, pandas, DVC,
+  MLflow, skops y huggingface_hub como bibliotecas.

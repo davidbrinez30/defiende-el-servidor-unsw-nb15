@@ -1,13 +1,12 @@
+# Python 3.12 o 3.13 (probado con 3.13). Instalar:  pip install -r requirements.txt
 dvc==3.67.1
-joblib==1.6.0
 mlflow==3.17.0
-numpy==2.5.3
-pandas==3.0.5
-prefect==3.8.8
-pyarrow==25.0.1
-PyYAML==6.0.3
 scikit-learn==1.9.1
 skops==0.16.0
-matplotlib==3.11.2
-nbconvert==7.17.1
-ipykernel==7.4.0
+huggingface_hub==2.3.0
+numpy==2.5.3
+pandas==3.0.5
+scipy==1.18.1
+pyarrow==25.0.1
+joblib==1.6.0
+PyYAML==6.0.3

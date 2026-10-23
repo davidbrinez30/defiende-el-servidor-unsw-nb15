@@ -1,0 +1,108 @@
+# Experimentos de comparación. Las hipótesis se escriben y se confirman en Git ANTES de entrenar.
+# Reglas de comparación justa:
+#  - todos usan las MISMAS particiones (entrenamiento 140.274 / validación 35.067);
+#  - cada experimento cambia UNA decisión respecto a su referencia (campo `referencia`);
+#  - E2, E4, E5 y E6 comparten el mismo preprocesamiento (log(1+x) + escalado), ajustado solo con entrenamiento;
+#    para los árboles esa transformación no cambia las predicciones (son invariantes a transformaciones monótonas),
+#    y así lo único que cambia entre E2 y E4 es el tipo de modelo.
+#  - cada hipótesis trae un `criterio` medible, escrito de antemano; el export lo evalúa con las métricas de VALIDACIÓN
+#    y escribe «confirmada» / «no confirmada» en evidencias/experimentos.csv. Operadores: mayor, menor (a > b ± margen),
+#    no_cae_mas_de (a >= b - margen), dif_abs_menor (|a - b| < margen), razon_mayor (b / a > margen, útil para tiempos).
+#  - umbral: «regla» = el umbral elegido con la regla (mayor recall con FPR <= 5 %); «0.5» = umbral fijo 0,5.
+experimentos:
+  - id: E0_baseline_siempre_ataque
+    familia: baseline
+    referencia: null
+    cambio: "Referencia sencilla: predecir siempre «ataque» (no aprende nada)."
+    hipotesis: >
+      Predecir siempre la clase mayoritaria (ataque, ~68 %) da ~68 % de accuracy pero 100 % de falsas alarmas y un
+      macro-F1 bajo. Es el piso: cualquier modelo útil debe superarlo en macro-F1 (E1 debe quedar por encima).
+    criterio:
+      - {metrica: macro_f1, umbral: regla, op: menor, vs: E1_logreg_cruda}
+    estimador: {clase: dummy, params: {strategy: constant, constant: 1}}
+    preprocesamiento: {log1p: false, escalado: false}
+    fraccion_entrenamiento: 1.0
+
+  - id: E1_logreg_cruda
+    familia: regresion_logistica
+    referencia: E0_baseline_siempre_ataque
+    cambio: "Primer modelo real: regresión logística sobre variables escaladas, sin transformar las colas."
+    hipotesis: >
+      Un modelo lineal sobre variables escaladas pero sin transformar (colas largas) supera con claridad al baseline:
+      al umbral de la regla, macro-F1 más de 0,10 por encima de E0 y FPR mucho menor.
+    criterio:
+      - {metrica: macro_f1, umbral: regla, op: mayor, vs: E0_baseline_siempre_ataque, margen: 0.10}
+      - {metrica: fpr, umbral: regla, op: menor, vs: E0_baseline_siempre_ataque, margen: 0.5}
+    estimador: {clase: logistic_regression, params: {max_iter: 2000, solver: lbfgs}}
+    preprocesamiento: {log1p: false, escalado: true}
+    fraccion_entrenamiento: 1.0
+
+  - id: E2_logreg_log1p
+    familia: regresion_logistica
+    referencia: E1_logreg_cruda
+    cambio: "Preprocesamiento: aplicar log(1+x) antes de escalar."
+    hipotesis: >
+      Aplicar log(1+x) antes de escalar mejora la regresión logística porque reduce la influencia de los valores
+      extremos: al umbral de la regla (FPR ~5 %), espero más recall y más macro-F1 que E1.
+    criterio:
+      - {metrica: macro_f1, umbral: regla, op: mayor, vs: E1_logreg_cruda}
+      - {metrica: recall, umbral: regla, op: mayor, vs: E1_logreg_cruda}
+    estimador: {clase: logistic_regression, params: {max_iter: 2000, solver: lbfgs}}
+    preprocesamiento: {log1p: true, escalado: true}
+    fraccion_entrenamiento: 1.0
+
+  - id: E3_logreg_log1p_balanceada
+    familia: regresion_logistica
+    referencia: E2_logreg_log1p
+    cambio: "Equilibrar clases con class_weight='balanced'."
+    hipotesis: >
+      Con class_weight='balanced' el modelo presta más atención a la clase normal (minoritaria, ~32 %): con el umbral
+      fijo 0,5 espero menos falsas alarmas a costa de algo de recall frente a E2. (Al umbral de la regla la FPR queda
+      fijada por construcción, así que esa comparación se hace a 0,5.)
+    criterio:
+      - {metrica: fpr, umbral: "0.5", op: menor, vs: E2_logreg_log1p}
+      - {metrica: recall, umbral: "0.5", op: menor, vs: E2_logreg_log1p}
+    estimador: {clase: logistic_regression, params: {max_iter: 2000, solver: lbfgs, class_weight: balanced}}
+    preprocesamiento: {log1p: true, escalado: true}
+    fraccion_entrenamiento: 1.0
+
+  - id: E4_random_forest
+    familia: random_forest
+    referencia: E2_logreg_log1p
+    cambio: "Tipo de modelo: Random Forest en lugar de regresión logística (mismo preprocesamiento que E2)."
+    hipotesis: >
+      Un modelo de árboles captura interacciones entre atributos (el EDA mostró que ninguna variable separa sola).
+      Espero superar claramente a la regresión logística E2: macro-F1 al menos 0,02 más alto al umbral de la regla.
+    criterio:
+      - {metrica: macro_f1, umbral: regla, op: mayor, vs: E2_logreg_log1p, margen: 0.02}
+    estimador: {clase: random_forest, params: {n_estimators: 200, min_samples_leaf: 2, n_jobs: -1, random_state: 42}}
+    preprocesamiento: {log1p: true, escalado: true}
+    fraccion_entrenamiento: 1.0
+
+  - id: E5_hist_gradient_boosting
+    familia: hist_gradient_boosting
+    referencia: E4_random_forest
+    cambio: "Aumentar complejidad: boosting de árboles secuenciales en lugar de bosque aleatorio."
+    hipotesis: >
+      Gradient boosting mejora a Random Forest en ROC-AUC, pero con filas repetidas y etiquetas ambiguas el techo es bajo:
+      la diferencia de macro-F1 con E4 será pequeña (menos de 0,01).
+    criterio:
+      - {metrica: roc_auc, umbral: regla, op: mayor, vs: E4_random_forest}
+      - {metrica: macro_f1, umbral: regla, op: dif_abs_menor, vs: E4_random_forest, margen: 0.01}
+    estimador: {clase: hist_gradient_boosting, params: {max_iter: 300, learning_rate: 0.1, random_state: 42}}
+    preprocesamiento: {log1p: true, escalado: true}
+    fraccion_entrenamiento: 1.0
+
+  - id: E6_random_forest_25pct_datos
+    familia: random_forest
+    referencia: E4_random_forest
+    cambio: "Usar solo 25 % de las filas de entrenamiento (muestra reproducible, semilla 42)."
+    hipotesis: >
+      Entrenar con 25 % de los datos pierde poco frente a E4 porque hay muchas filas repetidas: la caída de macro-F1 será
+      menor de 0,01 y el tiempo de entrenamiento bajará al menos a la mitad.
+    criterio:
+      - {metrica: macro_f1, umbral: regla, op: no_cae_mas_de, vs: E4_random_forest, margen: 0.01}
+      - {metrica: fit_seconds, umbral: regla, op: razon_mayor, vs: E4_random_forest, margen: 2.0}
+    estimador: {clase: random_forest, params: {n_estimators: 200, min_samples_leaf: 2, n_jobs: -1, random_state: 42}}
+    preprocesamiento: {log1p: true, escalado: true}
+    fraccion_entrenamiento: 0.25
