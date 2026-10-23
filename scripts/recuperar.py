@@ -63,6 +63,9 @@ def paso(nombre: str, cmd: list[str], cwd: Path, env: dict, log: Path, mostrar: 
 
 
 def main():
+    for flujo in (sys.stdout, sys.stderr):  # consolas de Windows con codificación antigua
+        if hasattr(flujo, "reconfigure"):
+            flujo.reconfigure(encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--revision", default="main", help="rama, tag o commit del repositorio de código a recuperar")
     ap.add_argument("--destino", default=None, help="carpeta NUEVA donde hacer la prueba (no debe existir)")

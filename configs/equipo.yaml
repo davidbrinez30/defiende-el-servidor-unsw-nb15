@@ -17,3 +17,7 @@ declaracion_ia: >
   y el pipeline y la prueba de recuperación se ejecutaron y comprobaron de forma automática. Asumo el contenido y
   puedo explicar las decisiones. No se adaptó código externo con licencia propia: se usan scikit-learn, pandas, DVC,
   MLflow, skops y huggingface_hub como bibliotecas.
+entorno_entrenamiento: >
+  Contenedor Linux en la nube (2 CPU, 7 GB de RAM, sin GPU), Python 3.13.16. Los tiempos de entrenamiento de
+  evidencias/experimentos.csv se midieron ahí; los tiempos de la prueba de recuperación, en el equipo indicado en
+  evidencias/recuperacion/comparacion.json.
