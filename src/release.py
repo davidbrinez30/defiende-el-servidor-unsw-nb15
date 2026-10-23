@@ -22,7 +22,7 @@ from src.config import EVIDENCIAS, MODELS, PARAMS, PROCESSED, ROOT, load_yaml
 from src.data import ID_COL, TARGET, feature_columns, load_split, sha256_file
 from src.modelio import predict_scores
 from src.metrics import POLITICA_DENOMINADOR_CERO, at_threshold, macro_f1_diff_bootstrap
-from src.provenance import data_refs, dvc_lock_outs, git_info
+from src.provenance import data_refs, dvc_lock_outs
 
 RELEASES = MODELS / "releases"
 RESUMEN = PROCESSED / "val_proba" / "resumen_ejecuciones.csv"
@@ -86,14 +86,14 @@ def _empaquetar(version: str, fila: pd.Series, descripcion: str, extra: dict) ->
 
     y = val[TARGET].to_numpy()
     umbral = float(fila["umbral"])
-    git, refs = git_info(), data_refs()
+    refs = data_refs()
     cfg = {
         "version": version,
         "descripcion": descripcion,
         "experimento": fila["experimento"],
         "familia": fila["familia"],
         "mlflow": {"experimento": PARAMS["mlflow"]["experiment"], "run_id": fila["run_id"]},
-        "git": {"commit_codigo_que_entreno": fila["git_commit"], "commit_al_empaquetar": git["git_commit"],
+        "git": {"commit_codigo_que_entreno": fila["git_commit"],
                 "repositorio": f"https://github.com/{load_yaml('equipo.yaml')['github']['usuario']}/"
                                f"{load_yaml('equipo.yaml')['github']['repo_codigo']}",
                 "tag": version},
@@ -195,7 +195,18 @@ def build_v2() -> dict:
     EVIDENCIAS.mkdir(exist_ok=True)
     (EVIDENCIAS / "seleccion_validacion.json").write_text(
         json.dumps(decision, indent=2, ensure_ascii=False, default=float) + "\n", encoding="utf-8")
-    return _empaquetar("v2", elegido, v2["descripcion"], {
+    cfg_v1 = json.loads((RELEASES / "v1" / "config.json").read_text(encoding="utf-8"))
+    costos = {
+        "tamano_modelo_bytes": {"v1": (RELEASES / "v1" / cfg_v1["modelo_archivo"]).stat().st_size, "v2": None},
+        "segundos_entrenamiento": {"v1": float(f1["fit_seconds"]), "v2": float(elegido["fit_seconds"])},
+    }
+    cfg = _empaquetar("v2", elegido, v2["descripcion"], {
         "seleccion": "automática por macro-F1 en validación (ver evidencias/seleccion_validacion.json)",
         "comparacion_con_v1": cambios,
+        "costos_frente_a_v1": costos,
     })
+    # El tamaño de v2 se conoce una vez escrito el paquete.
+    costos["tamano_modelo_bytes"]["v2"] = (RELEASES / "v2" / cfg["modelo_archivo"]).stat().st_size
+    cfg["costos_frente_a_v1"] = costos
+    (RELEASES / "v2" / "config.json").write_text(json.dumps(cfg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return cfg

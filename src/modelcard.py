@@ -31,6 +31,24 @@ def _tabla_metricas(m: dict) -> str:
     ])
 
 
+def _costos(cfg: dict) -> str:
+    peor = [k for k, v in cfg["comparacion_con_v1"].items() if v["efecto"] == "empeora"]
+    c, m = cfg["costos_frente_a_v1"], cfg["metricas_validacion"]
+    kb = lambda b: f"{miles(round(b / 1024))} KB"
+    empeora = f"empeora {', '.join(peor)} en validación" if peor else "ninguna métrica de validación empeora"
+    return (
+        f"**Qué mejora:** recall (+{f(cfg['comparacion_con_v1']['recall']['diferencia'])}) y macro-F1, con la misma FPR de 5 %: "
+        "se detectan más ataques sin aumentar las falsas alarmas.  \n"
+        f"**Qué empeora o se acepta:** {empeora}. El modelo pasa de {kb(c['tamano_modelo_bytes']['v1'])} a "
+        f"{kb(c['tamano_modelo_bytes']['v2'])}, el entrenamiento de {f(c['segundos_entrenamiento']['v1'], 1)} s a "
+        f"{f(c['segundos_entrenamiento']['v2'], 1)} s y se pierde la lectura directa de coeficientes. La FPR queda en 5 % por "
+        "construcción (es la regla del umbral), así que ahí no se espera ni se mide mejora.  \n"
+        f"**Errores que se aceptan:** {miles(m['al_umbral']['fn'])} ataques no detectados y {miles(m['al_umbral']['fp'])} falsas "
+        f"alarmas en las {miles(m['filas'])} filas de validación. La mejora en validación no garantiza la misma mejora en el test, "
+        "donde la distribución es distinta."
+    )
+
+
 def render(version: str, test: dict | None = None, hf: dict | None = None) -> str:
     cfg = json.loads((RELEASES / version / "config.json").read_text(encoding="utf-8"))
     eq = load_yaml("equipo.yaml")
@@ -114,7 +132,7 @@ Cambio único: el tipo de modelo (regresión logística → {cfg['familia'].repl
 |---|---|---|---|---|
 {filas}
 
-Lo que se acepta: un modelo más pesado y más lento de entrenar, a cambio del mejor equilibrio entre detectar ataques y no dar falsas alarmas en validación.
+{_costos(cfg)}
 """)
 
     partes.append(f"""## Trazabilidad
@@ -151,7 +169,7 @@ y_pred = (score_attack >= cfg["umbral"]).astype(int)                # 1 = ataque
 
 - Benchmark histórico y sintético: no generaliza por sí mismo a una red actual.
 - La validación (partición aleatoria agrupada del mismo archivo) es más favorable que el test publicado: allí las entradas
-  son distintas a las de entrenamiento, así que se espera una tasa de falsos positivos mayor que la de validación.
+  son en su gran mayoría distintas a las de entrenamiento, así que la tasa de falsos positivos del test puede ser mayor que la de validación.
 - Hay filas con entradas idénticas y etiquetas contradictorias; ningún modelo con estas variables puede acertarlas todas.
 - La FPR objetivo (5 %) se fijó en validación; en producción cada falsa alarma tiene un costo operativo que aquí no se modela.
 - Los SHA-256 coinciden con los del enunciado, pero el mirror de origen no está autenticado contra el archivo oficial de UNSW.
