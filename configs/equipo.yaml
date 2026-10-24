@@ -1,9 +1,12 @@
 # Datos del equipo y de las plataformas. Se usan para generar entrega.md, el informe y el mensaje de entrega.
 # Edita solo este archivo (nunca pongas tokens ni contraseñas aquí).
 integrantes:
-  - nombre: "[COMPLETAR nombre completo]"
-    grupo: "[COMPLETAR A o B]"
-    contribucion: "Trabajo individual: todo el proyecto."
+  - nombre: "David Santiago Briñez Forero"
+    grupo: "B"
+    contribucion: "Integrante del equipo."
+  - nombre: "Mattias Morales Serna"
+    grupo: "B"
+    contribucion: "Integrante del equipo."
 github:
   usuario: davidbrinez30
   repo_codigo: defiende-el-servidor-unsw-nb15
