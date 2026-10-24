@@ -1,0 +1,208 @@
+{
+  "version_evaluada": "v2",
+  "modelo": {
+    "archivo": "models/releases/v2/modelo.skops",
+    "sha256": "3e4ade35db97b10a53a0193361a824a700166db35b4854891fa04488ea6b36e8",
+    "experimento": "E5_hist_gradient_boosting",
+    "mlflow_run_id": "924822b52f714831bf054c763c5adab3",
+    "huggingface": {
+      "repo_id": "d4v1dsbf/defiende-el-servidor-unsw-nb15",
+      "url": "https://huggingface.co/d4v1dsbf/defiende-el-servidor-unsw-nb15",
+      "tag": "v2",
+      "commit_sha": "3639b0994cd1493723b8d8899f0e8311d9c798c3",
+      "sha256_archivos": {
+        "modelo.skops": "3e4ade35db97b10a53a0193361a824a700166db35b4854891fa04488ea6b36e8",
+        "config.json": "f45f2c6dae082a3229106ff79738d91fb61dcee4522552d6bb14695b2d7b9e5e",
+        "requirements.txt": "72a781a16c61e8f112488ab395df85ae90a3f7d6ef650b359b0fbe7d4d668fdc",
+        "README.md": "5c05ec3c056ac05362f4e1cf43b9680aea020582b4bb428136157daa66e3bcd8"
+      },
+      "v1": {
+        "tag": "v1",
+        "commit_sha": "3c9aabf11b57387f55d07261458c574f241be34c",
+        "modelo_sha256": "1b7fc9ed8ed2e86c7ab8ea47a6c16e6d1fdee37e5bbc5c489cbf6802b1c291d3",
+        "umbral": 0.7774031096044294,
+        "experimento": "E2_logreg_log1p",
+        "mlflow_run_id": "9c11a62d87ab4109a4bff065f6e4b3e8"
+      }
+    }
+  },
+  "dataset": {
+    "archivo": "UNSW_NB15_testing-set.csv",
+    "sha256": "734fe6642edf758f7c94d7d9149426b49d202fe8e7bf0bef47392489c3c0a559",
+    "filas_publicadas": 82332,
+    "filas_evaluadas": 82332,
+    "filas_excluidas": 0,
+    "etiqueta": "label"
+  },
+  "umbral": 0.6543756842019451,
+  "clase_positiva": "ataque (label = 1)",
+  "regla_umbral": "y_pred = 1 (ataque) si score_attack >= umbral; score_attack = probabilidad de ataque",
+  "matriz_confusion": {
+    "tp": 43942,
+    "fp": 6781,
+    "fn": 1390,
+    "tn": 30219,
+    "disposicion": "tp: ataque detectado; fp: normal marcado como ataque; fn: ataque no detectado; tn: normal aceptado"
+  },
+  "metricas": {
+    "recall": 0.9693373334509838,
+    "precision": 0.8663131123947716,
+    "fpr": 0.18327027027027026,
+    "macro_f1": 0.8979194949331639,
+    "accuracy": 0.9007554778215032
+  },
+  "ic95_bootstrap": {
+    "recall": [
+      0.9676276764978802,
+      0.9709751381208058
+    ],
+    "precision": [
+      0.8637676592446348,
+      0.8692212463977994
+    ],
+    "fpr": [
+      0.17956046165038797,
+      0.186881114577145
+    ],
+    "macro_f1": [
+      0.8960978537359202,
+      0.899995442036044
+    ],
+    "accuracy": [
+      0.8989335859690035,
+      0.9027792960209882
+    ],
+    "nota": "500 remuestreos de filas con umbral fijo; tratan las filas como independientes, así que subestiman la incertidumbre cuando hay entradas repetidas"
+  },
+  "metricas_ranking": {
+    "roc_auc": 0.9839155751202541,
+    "pr_auc": 0.9882411800260739
+  },
+  "referencia_umbral_0.5_no_usado": {
+    "umbral": 0.5,
+    "recall": 0.9834112768022589,
+    "precision": 0.8213423733809901,
+    "fpr": 0.2620810810810811,
+    "macro_f1": 0.8672409508542941,
+    "f1_ataque": 0.8950998403758698,
+    "accuracy": 0.8730870135548754,
+    "tp": 44580,
+    "fp": 9697,
+    "fn": 752,
+    "tn": 27303
+  },
+  "validacion_al_mismo_umbral": {
+    "umbral": 0.6543756842019451,
+    "recall": 0.9541626513596179,
+    "precision": 0.9759996571379591,
+    "fpr": 0.05,
+    "macro_f1": 0.9464188153034574,
+    "f1_ataque": 0.9649576271186441,
+    "accuracy": 0.9528331479738785,
+    "tp": 22773,
+    "fp": 560,
+    "fn": 1094,
+    "tn": 10640
+  },
+  "por_subconjunto_de_entradas": {
+    "entradas_ya_vistas_en_entrenamiento_o_validacion": {
+      "filas": 8541,
+      "porcentaje_del_test": 10.374,
+      "tp": 7056,
+      "fp": 430,
+      "fn": 13,
+      "tn": 1042,
+      "recall": 0.998160984580563,
+      "precision": 0.9425594442960192,
+      "fpr": 0.2921195652173913,
+      "macro_f1": 0.8971285180170951,
+      "f1_ataque": 0.9695637238062521,
+      "accuracy": 0.9481325371736331
+    },
+    "entradas_nuevas": {
+      "filas": 73791,
+      "porcentaje_del_test": 89.626,
+      "tp": 36886,
+      "fp": 6351,
+      "fn": 1377,
+      "tn": 29177,
+      "recall": 0.9640122311371299,
+      "precision": 0.853111918033166,
+      "fpr": 0.17876041432109885,
+      "macro_f1": 0.8941161505420947,
+      "f1_ataque": 0.9051779141104295,
+      "accuracy": 0.8952717811115176
+    }
+  },
+  "por_familia_de_ataque": {
+    "Analysis": {
+      "filas": 677,
+      "detectados": 637,
+      "recall": 0.9409158050221565
+    },
+    "Backdoor": {
+      "filas": 583,
+      "detectados": 583,
+      "recall": 1.0
+    },
+    "DoS": {
+      "filas": 4089,
+      "detectados": 4077,
+      "recall": 0.9970652971386648
+    },
+    "Exploits": {
+      "filas": 11132,
+      "detectados": 11031,
+      "recall": 0.9909270571325908
+    },
+    "Fuzzers": {
+      "filas": 6062,
+      "detectados": 4843,
+      "recall": 0.7989112504124052
+    },
+    "Generic": {
+      "filas": 18871,
+      "detectados": 18869,
+      "recall": 0.9998940172751841
+    },
+    "Normal": {
+      "filas": 37000,
+      "falsas_alarmas": 6781,
+      "fpr": 0.18327027027027026
+    },
+    "Reconnaissance": {
+      "filas": 3496,
+      "detectados": 3486,
+      "recall": 0.9971395881006865
+    },
+    "Shellcode": {
+      "filas": 378,
+      "detectados": 372,
+      "recall": 0.9841269841269841
+    },
+    "Worms": {
+      "filas": 44,
+      "detectados": 44,
+      "recall": 1.0
+    }
+  },
+  "politica_denominador_cero": "precision = 0 si no se emite ninguna alerta (TP+FP = 0); recall = 0 si no hay ataques reales (TP+FN = 0); FPR = 0 si no hay conexiones normales reales (FP+TN = 0). En validación y test ninguno de los denominadores es cero.",
+  "archivo_predicciones": {
+    "ruta": "evidencias/predicciones-test.csv",
+    "sha256": "40a884a1af4a886de22a2b40f0b5ab81de51d43e4e51c95213c2cfa1bf3b1378",
+    "filas": 82332,
+    "columnas": "row_id (testing-set:<id>), y_true, score_attack (probabilidad de ataque), y_pred"
+  },
+  "recalcular": "python -m src.cli recalcular   (usa solo predicciones-test.csv y el umbral de este archivo)",
+  "congelacion_verificada": {
+    "tag": "congelado",
+    "commit_del_tag": "9e1cd7b1456d024379522c784b7c7849b919fcdd",
+    "es_ancestro_de_HEAD": true,
+    "seleccion_sin_cambios_desde_el_tag": true
+  },
+  "git": {
+    "commit_de_la_evaluacion": "9e1cd7b1456d024379522c784b7c7849b919fcdd",
+    "codigo_sin_confirmar": false
+  },
+  "lectura": "Con el umbral fijado en validación, el test dio recall 96,93 %, FPR 18,33 % y macro-F1 0,8979; en validación fueron 95,42 %, 5,00 % y 0,9464. La FPR del test supera la meta de 5 % fijada en validación: el umbral elegido allí no controla las falsas alarmas en el test. El 89,6 % de las filas del test tiene entradas que no aparecen en entrenamiento ni validación, pero eso no basta para explicar la diferencia: la FPR fue 17,88 % en las entradas nuevas y 29,21 % en las ya vistas. La validación, partición aleatoria agrupada del mismo archivo, no reproduce el cambio entre las particiones publicadas por UNSW. El resultado se conserva tal cual; no se ajustó nada después de verlo."
+}

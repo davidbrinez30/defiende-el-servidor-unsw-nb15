@@ -165,27 +165,40 @@ stages:
   evaluate:
     cmd: python -m src.cli evaluate
     deps:
+    - path: data/processed/split_assignment.csv
+      hash: md5
+      md5: 84620a6590a34976659c4b5838afd410
+      size: 7562968
     - path: data/raw/UNSW_NB15_testing-set.csv
       hash: md5
       md5: e0beea40262e46168cdb81476dbc27b4
       size: 15380800
-    - path: models/final_model.joblib
+    - path: evidencias/seleccion.json
       hash: md5
-      md5: 077ce1c0f406e5842ed7698244f639be
-      size: 1128454
-    - path: reports/selection.json
+      md5: 3a50b1a7bc50cdcf14ba06c21cca5fef
+      size: 4463
+    - path: models/releases/v2
       hash: md5
-      md5: 57c55f46ac1ce191fc8540a0443c8a51
-      size: 923
+      md5: 8a0b44b49d9406f99c18bb83b9196c61.dir
+      size: 2925495
+      nfiles: 3
     - path: src/evaluate.py
       hash: md5
-      md5: f57d0595ee1a07d40068b31f03c1dcfd
-      size: 2781
-    outs:
-    - path: reports/test_metrics.json
+      md5: 7aeb3e87ee83a1271998bf072f24ae1b
+      size: 10044
+    - path: src/modelio.py
       hash: md5
-      md5: f1ee537ba2b68e681e8ecc26012d92eb
-      size: 1324
+      md5: c3251d9e294bb96e9bea7b329760fb6b
+      size: 1549
+    outs:
+    - path: evidencias/metricas-test.json
+      hash: md5
+      md5: e0252cbc8e1e483fd800cbbaabd39aae
+      size: 7047
+    - path: evidencias/predicciones-test.csv
+      hash: md5
+      md5: a9081f1202f2c57a872db9059d08c02b
+      size: 3429463
   audit:
     cmd: python -m src.cli audit
     deps:
