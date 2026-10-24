@@ -9,7 +9,7 @@ github:
   repo_codigo: defiende-el-servidor-unsw-nb15
   repo_almacenamiento_dvc: defiende-el-servidor-dvc-storage
 huggingface:
-  usuario: brinez
+  usuario: d4v1dsbf
   repo_modelos: defiende-el-servidor-unsw-nb15
 declaracion_ia: >
   Se usó el asistente Claude (Anthropic) para escribir y depurar el código, redactar la documentación y preparar el

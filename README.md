@@ -12,7 +12,7 @@ experimento viene, y que predice igual después de recuperarla en un entorno nue
 | Código, configuraciones, documentación, referencias DVC | Git / GitHub | este repositorio; tags `v1`, `v2`, `congelado` |
 | Datos originales y preparados, modelos de cada versión | DVC | `data/raw/*.dvc`, `dvc.yaml`, `dvc.lock`; almacenamiento HTTP público (ver más abajo) |
 | Experimentos (hipótesis, parámetros, métricas, modelo completo) | MLflow | `evidencias/mlflow/` (exportación) y `mlflow.db` local recreable |
-| Modelos publicados (v1, v2) con model card | Hugging Face Hub | https://huggingface.co/brinez/defiende-el-servidor-unsw-nb15 |
+| Modelos publicados (v1, v2) con model card | Hugging Face Hub | https://huggingface.co/d4v1dsbf/defiende-el-servidor-unsw-nb15 |
 
 Cadena de trazabilidad: **commit de Git → referencia DVC → run ID de MLflow → revisión (SHA) de Hugging Face**.
 
