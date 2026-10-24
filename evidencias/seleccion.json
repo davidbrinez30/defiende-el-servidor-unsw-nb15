@@ -1,0 +1,88 @@
+{
+  "version_elegida": "v2",
+  "experimento": "E5_hist_gradient_boosting",
+  "mlflow_run_id": "924822b52f714831bf054c763c5adab3",
+  "umbral": 0.6543756842019451,
+  "regla_umbral": "y_pred = 1 (ataque) si score_attack >= umbral; score_attack = probabilidad de ataque",
+  "modelo_sha256": "3e4ade35db97b10a53a0193361a824a700166db35b4854891fa04488ea6b36e8",
+  "modelo_joblib_del_run_sha256": "be09963fa4689e9d2f7ffad24a217119ab90ca374973156b2fa87d982476864a",
+  "razon_de_seleccion": {
+    "criterio": "Mayor macro-F1 en VALIDACIÓN al umbral de la regla (mayor recall con FPR <= 5 %). Desempate: mayor ROC-AUC, luego orden alfabético. El test no interviene.",
+    "macro_f1_validacion": 0.9464188153034574,
+    "recall_validacion": 0.954162651359618,
+    "fpr_validacion": 0.05,
+    "segundo_mejor": {
+      "experimento": "E4_random_forest",
+      "macro_f1": 0.944393952623553
+    },
+    "diferencia_macro_f1_vs_segundo": {
+      "media_bootstrap": 0.0020853239535801047,
+      "ic95": [
+        0.0003899955121833193,
+        0.0037383375911683326
+      ],
+      "remuestreos": 500,
+      "lectura": "el intervalo no incluye 0: la ventaja del elegido sobre el segundo es distinguible en validación"
+    },
+    "cambio_respecto_a_v1": "Tipo de modelo (regresión logística -> modelo de árboles); misma regla de umbral y mismo preprocesamiento."
+  },
+  "decision_completa": {
+    "archivo": "evidencias/seleccion_validacion.json",
+    "sha256": "9db6e17bac83bc5ea977719e77bf444b9193be59420bbe1a916bdc16e83784bb"
+  },
+  "referencias": {
+    "git": {
+      "repositorio": "https://github.com/davidbrinez30/defiende-el-servidor-unsw-nb15",
+      "tag_v1": "v1",
+      "tag_v2": "v2",
+      "commit_tag_v1": "829e94b518f47ab19c807bda2dc6cc64059dc5d9",
+      "commit_tag_v2": "008d971d9320b605f70627ab1973b18d6021b7b1",
+      "commit_codigo_que_entreno": "68d3332cb384b80686897994b97e0d2dc0b4a740"
+    },
+    "dvc": {
+      "dvc_original_train_md5": "e55caabaa6cd4a8f1c06a227bcfababc",
+      "dvc_original_test_md5": "e0beea40262e46168cdb81476dbc27b4",
+      "preparado_train.parquet_sha256": "a37aff7df3de8217800c1736bc4c8ad8ffa6243c93944f27d854088ba1277bd4",
+      "preparado_val.parquet_sha256": "6a3e85ad4a63017a51ce84ae8967badae7a8dba47980572731b9aab9a3936976",
+      "preparado_split_assignment.csv_sha256": "ebbfebba19427447215c648187dc32fe9b75e3fd3b06bc0f9cb6ae571992968a",
+      "prepare_outs_md5": {
+        "data/processed/split_assignment.csv": "84620a6590a34976659c4b5838afd410",
+        "data/processed/train.parquet": "7486d22a233d74fae0f038e182cc7c35",
+        "data/processed/val.parquet": "b1962c0a4bad5c513538ac486b042bfd"
+      },
+      "almacenamiento": "ver entrega.md (remote HTTP de solo lectura en GitHub)"
+    },
+    "mlflow": {
+      "experimento": "defiende-el-servidor",
+      "run_id": "924822b52f714831bf054c763c5adab3",
+      "export": "evidencias/mlflow/runs/E5_hist_gradient_boosting/run.json"
+    },
+    "huggingface": {
+      "repo_id": "d4v1dsbf/defiende-el-servidor-unsw-nb15",
+      "url": "https://huggingface.co/d4v1dsbf/defiende-el-servidor-unsw-nb15",
+      "tag": "v2",
+      "commit_sha": "3639b0994cd1493723b8d8899f0e8311d9c798c3",
+      "sha256_archivos": {
+        "modelo.skops": "3e4ade35db97b10a53a0193361a824a700166db35b4854891fa04488ea6b36e8",
+        "config.json": "f45f2c6dae082a3229106ff79738d91fb61dcee4522552d6bb14695b2d7b9e5e",
+        "requirements.txt": "72a781a16c61e8f112488ab395df85ae90a3f7d6ef650b359b0fbe7d4d668fdc",
+        "README.md": "5c05ec3c056ac05362f4e1cf43b9680aea020582b4bb428136157daa66e3bcd8"
+      },
+      "v1": {
+        "tag": "v1",
+        "commit_sha": "3c9aabf11b57387f55d07261458c574f241be34c",
+        "modelo_sha256": "1b7fc9ed8ed2e86c7ab8ea47a6c16e6d1fdee37e5bbc5c489cbf6802b1c291d3",
+        "umbral": 0.7774031096044294,
+        "experimento": "E2_logreg_log1p",
+        "mlflow_run_id": "9c11a62d87ab4109a4bff065f6e4b3e8"
+      }
+    }
+  },
+  "congelacion": {
+    "fecha_utc": "2026-10-24T19:23:35Z",
+    "tag_git": "congelado",
+    "test_evaluado_antes_de_congelar": false,
+    "como_se_verifica": "El commit con tag `congelado` contiene este archivo; `git log --follow evidencias/seleccion.json` y la fecha de `evidencias/predicciones-test.csv` (commit posterior) lo ordenan. evaluate.py rechaza correr si este archivo cambió desde el tag.",
+    "regla": "No se ajusta modelo ni umbral después de ver el test; si el resultado empeora, se explica y se conserva."
+  }
+}
