@@ -1,0 +1,32 @@
+{
+  "repo_id": "d4v1dsbf/defiende-el-servidor-unsw-nb15",
+  "url": "https://huggingface.co/d4v1dsbf/defiende-el-servidor-unsw-nb15",
+  "v1": {
+    "commit_sha": "3c9aabf11b57387f55d07261458c574f241be34c",
+    "tag": "v1",
+    "experimento": "E2_logreg_log1p",
+    "mlflow_run_id": "9c11a62d87ab4109a4bff065f6e4b3e8",
+    "umbral": 0.7774031096044294,
+    "sha256": {
+      "modelo.skops": "1b7fc9ed8ed2e86c7ab8ea47a6c16e6d1fdee37e5bbc5c489cbf6802b1c291d3",
+      "config.json": "a8beac9ae54885668c54f0e3cee9d0a6ed8ee5493d3127d8edbd4136f941f256",
+      "requirements.txt": "72a781a16c61e8f112488ab395df85ae90a3f7d6ef650b359b0fbe7d4d668fdc",
+      "README.md": "9688591ec6036a4bd47876915ffb7fab86119258761d329cbc0f2f56e7d071b3"
+    },
+    "descarga_verificada": "cada archivo descargado por el SHA de la revisión coincide con el local"
+  },
+  "v2": {
+    "commit_sha": "3639b0994cd1493723b8d8899f0e8311d9c798c3",
+    "tag": "v2",
+    "experimento": "E5_hist_gradient_boosting",
+    "mlflow_run_id": "924822b52f714831bf054c763c5adab3",
+    "umbral": 0.6543756842019451,
+    "sha256": {
+      "modelo.skops": "3e4ade35db97b10a53a0193361a824a700166db35b4854891fa04488ea6b36e8",
+      "config.json": "f45f2c6dae082a3229106ff79738d91fb61dcee4522552d6bb14695b2d7b9e5e",
+      "requirements.txt": "72a781a16c61e8f112488ab395df85ae90a3f7d6ef650b359b0fbe7d4d668fdc",
+      "README.md": "5c05ec3c056ac05362f4e1cf43b9680aea020582b4bb428136157daa66e3bcd8"
+    },
+    "descarga_verificada": "cada archivo descargado por el SHA de la revisión coincide con el local"
+  }
+}
