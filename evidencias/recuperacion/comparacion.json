@@ -1,0 +1,138 @@
+{
+  "fecha_utc": "2026-10-24T19:51:02Z",
+  "resultado": "APROBADA",
+  "repositorio": "https://github.com/davidbrinez30/defiende-el-servidor-unsw-nb15.git",
+  "revision_pedida": "main",
+  "commit_recuperado": "dedd3a698fcc6cd8432b382320ba4fa9511ce865",
+  "entorno_nuevo": {
+    "carpeta": "carpeta nueva creada para la prueba",
+    "venv_nuevo": true,
+    "cache_dvc_vacia": true,
+    "hf_cache_nueva": true,
+    "python": "3.13.15",
+    "sistema": "Windows-11-10.0.26200-SP0",
+    "cpus": 16
+  },
+  "tiempos_segundos": {
+    "instalar_dependencias": 207.5,
+    "dvc_pull": 9.0,
+    "total": 257.6
+  },
+  "huellas_verificadas": true,
+  "comparacion": {
+    "v1": {
+      "revision_hf_sha": "3c9aabf11b57387f55d07261458c574f241be34c",
+      "filas": 50,
+      "mismas_row_id_en_mismo_orden": true,
+      "y_pred_identicas": true,
+      "diferencia_maxima_score": 3.885780586188048e-16,
+      "tolerancia": 1e-09,
+      "dentro_de_tolerancia": true,
+      "sha256_modelo_hf": "1b7fc9ed8ed2e86c7ab8ea47a6c16e6d1fdee37e5bbc5c489cbf6802b1c291d3",
+      "sha256_modelo_dvc": "1b7fc9ed8ed2e86c7ab8ea47a6c16e6d1fdee37e5bbc5c489cbf6802b1c291d3",
+      "sha256_modelo_config": "1b7fc9ed8ed2e86c7ab8ea47a6c16e6d1fdee37e5bbc5c489cbf6802b1c291d3",
+      "hashes_coinciden": true,
+      "umbral": 0.7774031096044294,
+      "alertas_predichas": 23
+    },
+    "v2": {
+      "revision_hf_sha": "3639b0994cd1493723b8d8899f0e8311d9c798c3",
+      "filas": 50,
+      "mismas_row_id_en_mismo_orden": true,
+      "y_pred_identicas": true,
+      "diferencia_maxima_score": 0.0,
+      "tolerancia": 1e-09,
+      "dentro_de_tolerancia": true,
+      "sha256_modelo_hf": "3e4ade35db97b10a53a0193361a824a700166db35b4854891fa04488ea6b36e8",
+      "sha256_modelo_dvc": "3e4ade35db97b10a53a0193361a824a700166db35b4854891fa04488ea6b36e8",
+      "sha256_modelo_config": "3e4ade35db97b10a53a0193361a824a700166db35b4854891fa04488ea6b36e8",
+      "hashes_coinciden": true,
+      "umbral": 0.6543756842019451,
+      "alertas_predichas": 25
+    }
+  },
+  "v1_vs_v2": {
+    "filas_con_distinta_prediccion": 2,
+    "nota": "No es obligatorio que difieran; se informa para mostrar que son versiones distintas."
+  },
+  "entradas": {
+    "archivo": "evidencias/recuperacion/entradas_validacion.csv",
+    "filas": 50,
+    "sha256": "6932d88a5dc96388aa7e7084038e25b28d1b1e19b7f0d4c09ac9256c6c72764b"
+  },
+  "pasos": [
+    {
+      "paso": "1. Clonar el repositorio",
+      "comando": "git clone https://github.com/davidbrinez30/defiende-el-servidor-unsw-nb15.git proyecto",
+      "segundos": 1.1,
+      "codigo_salida": 0
+    },
+    {
+      "paso": "1b. Obtener la revisión elegida",
+      "comando": "git checkout main",
+      "segundos": 0.1,
+      "codigo_salida": 0
+    },
+    {
+      "paso": "1c. Commit completo recuperado",
+      "comando": "git rev-parse HEAD",
+      "segundos": 0.0,
+      "codigo_salida": 0
+    },
+    {
+      "paso": "2. Crear entorno virtual nuevo",
+      "comando": "~\\Documents\\claude\\defiende-el-servidor\\defiende-servidor\\.venv\\Scripts\\python.exe -m venv ~\\recuperacion-defiende-20261024-144645\\venv",
+      "segundos": 6.7,
+      "codigo_salida": 0
+    },
+    {
+      "paso": "2b. Instalar dependencias fijadas",
+      "comando": "~\\recuperacion-defiende-20261024-144645\\venv\\Scripts\\python.exe -m pip install -r requirements.txt",
+      "segundos": 207.5,
+      "codigo_salida": 0
+    },
+    {
+      "paso": "2c. Versiones instaladas",
+      "comando": "~\\recuperacion-defiende-20261024-144645\\venv\\Scripts\\python.exe -m pip freeze",
+      "segundos": 2.9,
+      "codigo_salida": 0
+    },
+    {
+      "paso": "3. Recuperar con DVC datos originales, preparados y modelos",
+      "comando": "~\\recuperacion-defiende-20261024-144645\\venv\\Scripts\\python.exe -m dvc pull data/raw/UNSW_NB15_training-set.csv.dvc data/raw/UNSW_NB15_testing-set.csv.dvc prepare release_v1 release_v2",
+      "segundos": 9.0,
+      "codigo_salida": 0
+    },
+    {
+      "paso": "4. Verificar huellas SHA-256",
+      "comando": "~\\recuperacion-defiende-20261024-144645\\venv\\Scripts\\python.exe -m src.cli verificar",
+      "segundos": 13.7,
+      "codigo_salida": 0
+    },
+    {
+      "paso": "5. Descargar v1 de Hugging Face por SHA 3c9aabf11b57387f55d07261458c574f241be34c",
+      "comando": "~\\recuperacion-defiende-20261024-144645\\venv\\Scripts\\python.exe -c from src.predict import descargar; print(descargar('3c9aabf11b57387f55d07261458c574f241be34c', 'C:\\\\Users\\\\SANTIAGO_Y _SAMUEL\\\\recuperacion-defiende-20261024-144645\\\\hf\\\\v1'))",
+      "segundos": 5.4,
+      "codigo_salida": 0
+    },
+    {
+      "paso": "5b. Predecir con v1 sobre las entradas fijas",
+      "comando": "~\\recuperacion-defiende-20261024-144645\\venv\\Scripts\\python.exe -m src.predict --release ~\\recuperacion-defiende-20261024-144645\\hf\\v1 --input ~\\recuperacion-defiende-20261024-144645\\proyecto\\evidencias\\recuperacion\\entradas_validacion.csv --output ~\\recuperacion-defiende-20261024-144645\\proyecto\\evidencias\\recuperacion\\salida_despues_v1.csv",
+      "segundos": 3.6,
+      "codigo_salida": 0
+    },
+    {
+      "paso": "5. Descargar v2 de Hugging Face por SHA 3639b0994cd1493723b8d8899f0e8311d9c798c3",
+      "comando": "~\\recuperacion-defiende-20261024-144645\\venv\\Scripts\\python.exe -c from src.predict import descargar; print(descargar('3639b0994cd1493723b8d8899f0e8311d9c798c3', 'C:\\\\Users\\\\SANTIAGO_Y _SAMUEL\\\\recuperacion-defiende-20261024-144645\\\\hf\\\\v2'))",
+      "segundos": 4.4,
+      "codigo_salida": 0
+    },
+    {
+      "paso": "5b. Predecir con v2 sobre las entradas fijas",
+      "comando": "~\\recuperacion-defiende-20261024-144645\\venv\\Scripts\\python.exe -m src.predict --release ~\\recuperacion-defiende-20261024-144645\\hf\\v2 --input ~\\recuperacion-defiende-20261024-144645\\proyecto\\evidencias\\recuperacion\\entradas_validacion.csv --output ~\\recuperacion-defiende-20261024-144645\\proyecto\\evidencias\\recuperacion\\salida_despues_v2.csv",
+      "segundos": 2.9,
+      "codigo_salida": 0
+    }
+  ],
+  "hf_simulado": false
+}

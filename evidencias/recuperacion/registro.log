@@ -1,0 +1,741 @@
+Prueba de recuperación · 2026-10-24T19:46:45Z
+Sistema: Windows-11-10.0.26200-SP0 · Python 3.13.15 · CPU 16
+Destino: ~\recuperacion-defiende-20261024-144645
+
+=== 1. Clonar el repositorio ===
+$ git clone https://github.com/davidbrinez30/defiende-el-servidor-unsw-nb15.git proyecto
+(cwd: recuperacion-defiende-20261024-144645; 1.1 s; código de salida 0)
+Cloning into 'proyecto'...
+
+
+=== 1b. Obtener la revisión elegida ===
+$ git checkout main
+(cwd: proyecto; 0.1 s; código de salida 0)
+Your branch is up to date with 'origin/main'.
+Already on 'main'
+
+
+=== 1c. Commit completo recuperado ===
+$ git rev-parse HEAD
+(cwd: proyecto; 0.0 s; código de salida 0)
+dedd3a698fcc6cd8432b382320ba4fa9511ce865
+
+
+=== 2. Crear entorno virtual nuevo ===
+$ ~\Documents\claude\defiende-el-servidor\defiende-servidor\.venv\Scripts\python.exe -m venv ~\recuperacion-defiende-20261024-144645\venv
+(cwd: proyecto; 6.7 s; código de salida 0)
+
+
+=== 2b. Instalar dependencias fijadas ===
+$ ~\recuperacion-defiende-20261024-144645\venv\Scripts\python.exe -m pip install -r requirements.txt
+(cwd: proyecto; 207.5 s; código de salida 0)
+Collecting dvc==3.67.1 (from -r requirements.txt (line 2))
+  Using cached dvc-3.67.1-py3-none-any.whl.metadata (17 kB)
+Collecting mlflow==3.17.0 (from -r requirements.txt (line 3))
+  Using cached mlflow-3.17.0-py3-none-any.whl.metadata (50 kB)
+Collecting scikit-learn==1.9.1 (from -r requirements.txt (line 4))
+  Using cached scikit_learn-1.9.1-cp313-cp313-win_amd64.whl.metadata (9.3 kB)
+Collecting skops==0.16.0 (from -r requirements.txt (line 5))
+  Using cached skops-0.16.0-py3-none-any.whl.metadata (4.3 kB)
+Collecting huggingface_hub==2.3.0 (from -r requirements.txt (line 6))
+  Using cached huggingface_hub-2.3.0-py3-none-any.whl.metadata (16 kB)
+Collecting numpy==2.5.3 (from -r requirements.txt (line 7))
+  Using cached numpy-2.5.3-cp313-cp313-win_amd64.whl.metadata (6.6 kB)
+Collecting pandas==3.0.5 (from -r requirements.txt (line 8))
+  Using cached pandas-3.0.5-cp313-cp313-win_amd64.whl.metadata (19 kB)
+Collecting scipy==1.18.1 (from -r requirements.txt (line 9))
+  Using cached scipy-1.18.1-cp313-cp313-win_amd64.whl.metadata (61 kB)
+Collecting pyarrow==25.0.1 (from -r requirements.txt (line 10))
+  Using cached pyarrow-25.0.1-cp313-cp313-win_amd64.whl.metadata (3.0 kB)
+Collecting joblib==1.6.0 (from -r requirements.txt (line 11))
+  Using cached joblib-1.6.0-py3-none-any.whl.metadata (6.5 kB)
+Collecting PyYAML==6.0.3 (from -r requirements.txt (line 12))
+  Using cached pyyaml-6.0.3-cp313-cp313-win_amd64.whl.metadata (2.4 kB)
+Collecting attrs>=22.2.0 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+Collecting celery (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached celery-5.6.3-py3-none-any.whl.metadata (23 kB)
+Collecting colorama>=0.3.9 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached colorama-0.4.6-py2.py3-none-any.whl.metadata (17 kB)
+Collecting configobj>=5.0.9 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached configobj-5.0.9-py2.py3-none-any.whl.metadata (3.2 kB)
+Collecting distro>=1.3 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached distro-1.9.0-py3-none-any.whl.metadata (6.8 kB)
+Collecting dpath<3,>=2.1.0 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached dpath-2.2.0-py3-none-any.whl.metadata (15 kB)
+Collecting dulwich (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached dulwich-1.2.19-cp313-cp313-win_amd64.whl.metadata (6.3 kB)
+Collecting dvc-data<3.19.0,>=3.18.2 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached dvc_data-3.18.3-py3-none-any.whl.metadata (4.9 kB)
+Collecting dvc-http>=2.29.0 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached dvc_http-2.32.0-py3-none-any.whl.metadata (1.3 kB)
+Collecting dvc-objects (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached dvc_objects-5.2.0-py3-none-any.whl.metadata (3.9 kB)
+Collecting dvc-render<2,>=1.0.1 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached dvc_render-1.0.2-py3-none-any.whl.metadata (5.4 kB)
+Collecting dvc-studio-client<1,>=0.21 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached dvc_studio_client-0.23.0-py3-none-any.whl.metadata (4.4 kB)
+Collecting dvc-task<1,>=0.3.0 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached dvc_task-0.40.2-py3-none-any.whl.metadata (10.0 kB)
+Collecting flatten-dict<1,>=0.4.1 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached flatten_dict-0.5.0-py3-none-any.whl.metadata (8.9 kB)
+Collecting flufl.lock<10,>=8.1.0 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached flufl_lock-9.2.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting fsspec>=2024.2.0 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached fsspec-2026.9.0-py3-none-any.whl.metadata (10 kB)
+Collecting funcy>=1.14 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached funcy-2.1-py3-none-any.whl.metadata (6.3 kB)
+Collecting grandalf<1,>=0.7 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached grandalf-0.8-py3-none-any.whl.metadata (1.7 kB)
+Collecting gto<2,>=1.6.0 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached gto-1.10.1-py3-none-any.whl.metadata (4.8 kB)
+Collecting hydra-core>=1.1 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached hydra_core-1.3.7-py3-none-any.whl.metadata (5.7 kB)
+Collecting iterative-telemetry>=0.0.7 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached iterative_telemetry-0.0.10-py3-none-any.whl.metadata (4.1 kB)
+Collecting kombu (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached kombu-5.6.2-py3-none-any.whl.metadata (3.5 kB)
+Collecting networkx>=2.5 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached networkx-3.7-py3-none-any.whl.metadata (6.7 kB)
+Collecting omegaconf (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached omegaconf-2.4.0-py3-none-any.whl.metadata (4.9 kB)
+Collecting packaging>=19 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+Collecting pathspec<2,>=0.10.3 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached pathspec-1.1.1-py3-none-any.whl.metadata (14 kB)
+Collecting platformdirs<5,>=3.1.1 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached platformdirs-4.13.5-py3-none-any.whl.metadata (5.5 kB)
+Collecting psutil>=5.8 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached psutil-7.2.2-cp37-abi3-win_amd64.whl.metadata (22 kB)
+Collecting pydot>=1.2.4 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached pydot-4.0.1-py3-none-any.whl.metadata (11 kB)
+Collecting pygtrie>=2.3.2 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached pygtrie-2.6.2-py3-none-any.whl.metadata (12 kB)
+Collecting pyparsing>=3.0.0 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached pyparsing-3.3.3-py3-none-any.whl.metadata (5.9 kB)
+Collecting requests>=2.22 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+Collecting rich>=12 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached rich-15.0.0-py3-none-any.whl.metadata (18 kB)
+Collecting ruamel.yaml>=0.17.11 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached ruamel_yaml-0.19.1-py3-none-any.whl.metadata (16 kB)
+Collecting scmrepo<4,>=3.5.2 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached scmrepo-3.6.2-py3-none-any.whl.metadata (4.8 kB)
+Collecting shortuuid>=0.5 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached shortuuid-1.0.13-py3-none-any.whl.metadata (5.8 kB)
+Collecting shtab<2,>=1.3.4 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached shtab-1.13.0-py3-none-any.whl.metadata (7.6 kB)
+Collecting tabulate>=0.8.7 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached tabulate-0.10.0-py3-none-any.whl.metadata (40 kB)
+Collecting tomlkit>=0.11.1 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached tomlkit-0.15.2-py3-none-any.whl.metadata (3.4 kB)
+Collecting tqdm<5,>=4.63.1 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached tqdm-4.70.1-py3-none-any.whl.metadata (57 kB)
+Collecting voluptuous>=0.11.7 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached voluptuous-0.16.0-py3-none-any.whl.metadata (20 kB)
+Collecting zc.lockfile>=1.2.1 (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached zc_lockfile-4.0-py3-none-any.whl.metadata (6.6 kB)
+Collecting mlflow-skinny==3.17.0 (from mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached mlflow_skinny-3.17.0-py3-none-any.whl.metadata (51 kB)
+Collecting mlflow-tracing==3.17.0 (from mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached mlflow_tracing-3.17.0-py3-none-any.whl.metadata (19 kB)
+Collecting Flask-CORS<7 (from mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached flask_cors-6.0.5-py3-none-any.whl.metadata (5.4 kB)
+Collecting Flask<4 (from mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached flask-3.1.3-py3-none-any.whl.metadata (3.2 kB)
+Collecting aiohttp<4,>=3.7.0 (from mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached aiohttp-3.14.5-cp313-cp313-win_amd64.whl.metadata (8.5 kB)
+Collecting alembic!=1.10.0,<2 (from mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached alembic-1.20.1-py3-none-any.whl.metadata (7.3 kB)
+Collecting cryptography<51,>=43.0.0 (from mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached cryptography-50.0.2-cp311-abi3-win_amd64.whl.metadata (4.4 kB)
+Collecting docker<8,>=4.0.0 (from mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached docker-7.2.0-py3-none-any.whl.metadata (3.8 kB)
+Collecting graphene<4 (from mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached graphene-3.4.3-py2.py3-none-any.whl.metadata (6.9 kB)
+Collecting huey<4,>=2.5.4 (from mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached huey-3.5.3-py3-none-any.whl.metadata (5.7 kB)
+Collecting matplotlib<4 (from mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached matplotlib-3.11.2-cp313-cp313-win_amd64.whl.metadata (80 kB)
+Collecting sqlalchemy<3,>=1.4.0 (from mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached sqlalchemy-2.1.6-cp313-cp313-win_amd64.whl.metadata (9.9 kB)
+Collecting waitress<4 (from mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached waitress-3.0.2-py3-none-any.whl.metadata (5.8 kB)
+Collecting narwhals>=2.0.1 (from scikit-learn==1.9.1->-r requirements.txt (line 4))
+  Using cached narwhals-2.27.1-py3-none-any.whl.metadata (15 kB)
+Collecting threadpoolctl>=3.5.0 (from scikit-learn==1.9.1->-r requirements.txt (line 4))
+  Using cached threadpoolctl-3.7.0-py3-none-any.whl.metadata (24 kB)
+Collecting prettytable>=3.9 (from skops==0.16.0->-r requirements.txt (line 5))
+  Using cached prettytable-3.18.0-py3-none-any.whl.metadata (37 kB)
+Collecting python-dateutil>=2.8.2 (from pandas==3.0.5->-r requirements.txt (line 8))
+  Using cached python_dateutil-3.0.0-py2.py3-none-any.whl.metadata (8.2 kB)
+Collecting tzdata (from pandas==3.0.5->-r requirements.txt (line 8))
+  Using cached tzdata-2026.5-py2.py3-none-any.whl.metadata (1.4 kB)
+Collecting click<9.0.0,>=8.4.2 (from huggingface_hub==2.3.0->-r requirements.txt (line 6))
+  Using cached click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+Collecting filelock>=3.10.0 (from huggingface_hub==2.3.0->-r requirements.txt (line 6))
+  Using cached filelock-4.2.4-py3-none-any.whl.metadata (2.0 kB)
+Collecting hf-xet<2.0.0,>=1.6.0 (from huggingface_hub==2.3.0->-r requirements.txt (line 6))
+  Using cached hf_xet-1.7.0-cp38-abi3-win_amd64.whl.metadata (4.9 kB)
+Collecting httpx2<3,>=2.0.0 (from huggingface_hub==2.3.0->-r requirements.txt (line 6))
+  Using cached httpx2-2.16.0-py3-none-any.whl.metadata (10 kB)
+Collecting typing-extensions>=4.1.0 (from huggingface_hub==2.3.0->-r requirements.txt (line 6))
+  Using cached typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting cloudpickle>=3.0 (from joblib==1.6.0->-r requirements.txt (line 11))
+  Using cached cloudpickle-3.1.2-py3-none-any.whl.metadata (7.1 kB)
+Collecting anyio!=4.15.0,<5,>=3.6.2 (from mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+Collecting cachetools<8,>=5.0.0 (from mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached cachetools-7.2.4-py3-none-any.whl.metadata (5.5 kB)
+Collecting databricks-sdk<1,>=0.20.0 (from mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached databricks_sdk-0.157.0-py3-none-any.whl.metadata (44 kB)
+Collecting fastapi<1 (from mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached fastapi-0.162.0-py3-none-any.whl.metadata (26 kB)
+Collecting gitpython<4,>=3.1.9 (from mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached gitpython-3.2.1-py3-none-any.whl.metadata (13 kB)
+Collecting importlib_metadata!=4.7.0,<10,>=3.7.0 (from mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached importlib_metadata-9.1.0-py3-none-any.whl.metadata (4.5 kB)
+Collecting opentelemetry-api<3,>=1.9.0 (from mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached opentelemetry_api-1.45.1-py3-none-any.whl.metadata (1.4 kB)
+Collecting opentelemetry-proto<3,>=1.9.0 (from mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached opentelemetry_proto-1.45.1-py3-none-any.whl.metadata (2.3 kB)
+Collecting opentelemetry-sdk<3,>=1.9.0 (from mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached opentelemetry_sdk-1.45.1-py3-none-any.whl.metadata (1.6 kB)
+Collecting protobuf<8,>=3.12.0 (from mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached protobuf-7.36.2-cp310-abi3-win_amd64.whl.metadata (595 bytes)
+Collecting pydantic<3,>=2.0.0 (from mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached pydantic-2.14.1-py3-none-any.whl.metadata (133 kB)
+Collecting python-dotenv<2,>=0.19.0 (from mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached python_dotenv-1.2.4-py3-none-any.whl.metadata (29 kB)
+Collecting sqlparse<1,>=0.4.0 (from mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached sqlparse-0.6.0-py3-none-any.whl.metadata (6.0 kB)
+Collecting starlette<2 (from mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached starlette-1.10.0-py3-none-any.whl.metadata (6.6 kB)
+Collecting uvicorn<1 (from mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)
+Collecting aiohappyeyeballs>=2.5.0 (from aiohttp<4,>=3.7.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached aiohappyeyeballs-2.7.1-py3-none-any.whl.metadata (5.9 kB)
+Collecting aiosignal>=1.4.0 (from aiohttp<4,>=3.7.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached aiosignal-1.4.0-py3-none-any.whl.metadata (3.7 kB)
+Collecting frozenlist>=1.1.1 (from aiohttp<4,>=3.7.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached frozenlist-1.8.0-cp313-cp313-win_amd64.whl.metadata (21 kB)
+Collecting multidict<8.0,>=4.5 (from aiohttp<4,>=3.7.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached multidict-7.2.0-cp313-cp313-win_amd64.whl.metadata (6.3 kB)
+Collecting propcache>=0.2.0 (from aiohttp<4,>=3.7.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached propcache-0.5.4-cp313-cp313-win_amd64.whl.metadata (25 kB)
+Collecting yarl<2.0,>=1.25.1 (from aiohttp<4,>=3.7.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached yarl-1.25.1-cp313-cp313-win_amd64.whl.metadata (115 kB)
+Collecting Mako (from alembic!=1.10.0,<2->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached mako-1.4.3-py3-none-any.whl.metadata (2.9 kB)
+Collecting idna>=2.8 (from anyio!=4.15.0,<5,>=3.6.2->mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+Collecting cffi>=2.0.0 (from cryptography<51,>=43.0.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached cffi-2.1.1-cp313-cp313-win_amd64.whl.metadata (2.6 kB)
+Collecting certifi>=2026.10.19 (from databricks-sdk<1,>=0.20.0->mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+Collecting google-auth~=2.0 (from databricks-sdk<1,>=0.20.0->mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached google_auth-2.62.0-py3-none-any.whl.metadata (6.0 kB)
+Collecting urllib3<3,>=1.26 (from databricks-sdk<1,>=0.20.0->mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+Collecting pywin32>=304 (from docker<8,>=4.0.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached pywin32-312-cp313-cp313-win_amd64.whl.metadata (11 kB)
+Collecting dictdiffer>=0.8.1 (from dvc-data<3.19.0,>=3.18.2->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached dictdiffer-0.10.0-py3-none-any.whl.metadata (2.9 kB)
+Collecting diskcache>=5.2.1 (from dvc-data<3.19.0,>=3.18.2->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached diskcache-5.6.3-py3-none-any.whl.metadata (20 kB)
+Collecting sqltrie<1,>=0.11.0 (from dvc-data<3.19.0,>=3.18.2->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached sqltrie-0.11.3-py3-none-any.whl.metadata (3.5 kB)
+Collecting orjson<4,>=3 (from dvc-data<3.19.0,>=3.18.2->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached orjson-3.13.0-cp313-cp313-win_amd64.whl.metadata (43 kB)
+Collecting billiard<5.0,>=4.2.1 (from celery->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached billiard-4.3.1-py3-none-any.whl.metadata (5.0 kB)
+Collecting vine<6.0,>=5.1.0 (from celery->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached vine-5.1.0-py3-none-any.whl.metadata (2.7 kB)
+Collecting click-didyoumean>=0.3.0 (from celery->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached click_didyoumean-0.3.1-py3-none-any.whl.metadata (3.9 kB)
+Collecting click-repl>=0.2.0 (from celery->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached click_repl-0.4.1-py3-none-any.whl.metadata (3.7 kB)
+Collecting click-plugins>=1.1.1 (from celery->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached click_plugins-1.1.1.2-py2.py3-none-any.whl.metadata (6.5 kB)
+Collecting tzlocal (from celery->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached tzlocal-5.4.5-py3-none-any.whl.metadata (7.7 kB)
+Collecting typing-inspection>=0.4.2 (from fastapi<1->mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+Collecting annotated-doc>=0.0.2 (from fastapi<1->mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached annotated_doc-0.0.5-py3-none-any.whl.metadata (6.5 kB)
+Collecting blinker>=1.9.0 (from Flask<4->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached blinker-1.9.0-py3-none-any.whl.metadata (1.6 kB)
+Collecting itsdangerous>=2.2.0 (from Flask<4->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)
+Collecting jinja2>=3.1.2 (from Flask<4->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+Collecting markupsafe>=2.1.1 (from Flask<4->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached markupsafe-3.0.4-cp313-cp313-win_amd64.whl.metadata (2.8 kB)
+Collecting werkzeug>=3.1.0 (from Flask<4->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached werkzeug-3.1.9-py3-none-any.whl.metadata (4.1 kB)
+Collecting atpublic (from flufl.lock<10,>=8.1.0->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached atpublic-9.0.0-py3-none-any.whl.metadata (2.6 kB)
+Collecting gitdb<5,>=4.0.1 (from gitpython<4,>=3.1.9->mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached gitdb-4.0.12-py3-none-any.whl.metadata (1.2 kB)
+Collecting smmap<6,>=3.0.1 (from gitdb<5,>=4.0.1->gitpython<4,>=3.1.9->mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached smmap-5.0.3-py3-none-any.whl.metadata (4.6 kB)
+Collecting pyasn1-modules>=0.2.1 (from google-auth~=2.0->databricks-sdk<1,>=0.20.0->mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached pyasn1_modules-0.4.2-py3-none-any.whl.metadata (3.5 kB)
+Collecting graphql-core<3.3,>=3.1 (from graphene<4->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached graphql_core-3.2.13-py3-none-any.whl.metadata (11 kB)
+Collecting graphql-relay<3.3,>=3.1 (from graphene<4->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached graphql_relay-3.2.0-py3-none-any.whl.metadata (12 kB)
+Collecting python-dateutil>=2.8.2 (from pandas==3.0.5->-r requirements.txt (line 8))
+  Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Collecting entrypoints (from gto<2,>=1.6.0->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached entrypoints-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+Collecting pydantic-settings>=2 (from gto<2,>=1.6.0->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached pydantic_settings-2.16.1-py3-none-any.whl.metadata (4.0 kB)
+Collecting semver>=2.13.0 (from gto<2,>=1.6.0->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached semver-3.1.0-py3-none-any.whl.metadata (6.9 kB)
+Collecting httpcore2==2.16.0 (from httpx2<3,>=2.0.0->huggingface_hub==2.3.0->-r requirements.txt (line 6))
+  Using cached httpcore2-2.16.0-py3-none-any.whl.metadata (27 kB)
+Collecting truststore>=0.10 (from httpx2<3,>=2.0.0->huggingface_hub==2.3.0->-r requirements.txt (line 6))
+  Using cached truststore-0.10.5-py3-none-any.whl.metadata (4.5 kB)
+Collecting h11>=0.16 (from httpcore2==2.16.0->httpx2<3,>=2.0.0->huggingface_hub==2.3.0->-r requirements.txt (line 6))
+  Using cached h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+Collecting zipp>=3.20 (from importlib_metadata!=4.7.0,<10,>=3.7.0->mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached zipp-4.1.2-py3-none-any.whl.metadata (3.6 kB)
+Collecting amqp<6.0.0,>=5.1.1 (from kombu->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached amqp-5.4.1-py3-none-any.whl.metadata (9.4 kB)
+Collecting contourpy>=1.0.1 (from matplotlib<4->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached contourpy-1.4.0-cp313-cp313-win_amd64.whl.metadata (3.8 kB)
+Collecting cycler>=0.10 (from matplotlib<4->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached cycler-0.12.1-py3-none-any.whl.metadata (3.8 kB)
+Collecting fonttools>=4.28.2 (from matplotlib<4->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached fonttools-4.67.0-cp313-cp313-win_amd64.whl.metadata (139 kB)
+Collecting kiwisolver>=1.3.1 (from matplotlib<4->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached kiwisolver-1.5.1-cp313-cp313-win_amd64.whl.metadata (5.2 kB)
+Collecting pillow>=9 (from matplotlib<4->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached pillow-13.0.0-cp313-cp313-win_amd64.whl.metadata (9.3 kB)
+Collecting opentelemetry-semantic-conventions==0.66b1 (from opentelemetry-sdk<3,>=1.9.0->mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached opentelemetry_semantic_conventions-0.66b1-py3-none-any.whl.metadata (2.4 kB)
+Collecting annotated-types>=0.6.0 (from pydantic<3,>=2.0.0->mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+Collecting pydantic-core==2.50.1 (from pydantic<3,>=2.0.0->mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached pydantic_core-2.50.1-cp313-cp313-win_amd64.whl.metadata (6.7 kB)
+Collecting six>=1.5 (from python-dateutil>=2.8.2->pandas==3.0.5->-r requirements.txt (line 8))
+  Using cached six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Collecting charset_normalizer<4,>=2 (from requests>=2.22->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached charset_normalizer-3.5.2-cp313-cp313-win_amd64.whl.metadata (47 kB)
+Collecting pygit2>=1.14.0 (from scmrepo<4,>=3.5.2->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached pygit2-1.20.1-cp313-cp313-win_amd64.whl.metadata (3.8 kB)
+Collecting asyncssh<3,>=2.13.1 (from scmrepo<4,>=3.5.2->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached asyncssh-2.24.1-py3-none-any.whl.metadata (9.8 kB)
+Collecting aiohttp-retry>=2.5.0 (from scmrepo<4,>=3.5.2->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached aiohttp_retry-2.9.1-py3-none-any.whl.metadata (8.8 kB)
+Collecting pycparser (from cffi>=2.0.0->cryptography<51,>=43.0.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached pycparser-3.12-py3-none-any.whl.metadata (9.7 kB)
+Collecting prompt_toolkit>=3.0.36 (from click-repl>=0.2.0->celery->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached prompt_toolkit-3.0.53-py3-none-any.whl.metadata (6.4 kB)
+Collecting omegaconf (from dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached omegaconf-2.3.1-py3-none-any.whl.metadata (4.5 kB)
+Collecting antlr4-python3-runtime==4.9.* (from hydra-core>=1.1->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached antlr4_python3_runtime-4.9.3-py3-none-any.whl
+Collecting appdirs (from iterative-telemetry>=0.0.7->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached appdirs-1.4.4-py2.py3-none-any.whl.metadata (9.0 kB)
+Collecting wcwidth>=0.3.5 (from prettytable>=3.9->skops==0.16.0->-r requirements.txt (line 5))
+  Using cached wcwidth-0.9.4-cp310-abi3-win_amd64.whl.metadata (24 kB)
+Collecting pyasn1<0.7.0,>=0.6.1 (from pyasn1-modules>=0.2.1->google-auth~=2.0->databricks-sdk<1,>=0.20.0->mlflow-skinny==3.17.0->mlflow==3.17.0->-r requirements.txt (line 3))
+  Using cached pyasn1-0.6.4-py3-none-any.whl.metadata (8.4 kB)
+Collecting markdown-it-py>=2.2.0 (from rich>=12->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached markdown_it_py-4.2.0-py3-none-any.whl.metadata (7.4 kB)
+Collecting pygments<3.0.0,>=2.13.0 (from rich>=12->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=12->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+Collecting setuptools (from zc.lockfile>=1.2.1->dvc==3.67.1->-r requirements.txt (line 2))
+  Using cached setuptools-84.2.1-py3-none-any.whl.metadata (6.6 kB)
+Using cached dvc-3.67.1-py3-none-any.whl (470 kB)
+Using cached mlflow-3.17.0-py3-none-any.whl (12.0 MB)
+Using cached scikit_learn-1.9.1-cp313-cp313-win_amd64.whl (8.2 MB)
+Using cached skops-0.16.0-py3-none-any.whl (148 kB)
+Using cached numpy-2.5.3-cp313-cp313-win_amd64.whl (12.6 MB)
+Using cached pandas-3.0.5-cp313-cp313-win_amd64.whl (9.8 MB)
+Using cached scipy-1.18.1-cp313-cp313-win_amd64.whl (36.6 MB)
+Using cached pyarrow-25.0.1-cp313-cp313-win_amd64.whl (27.9 MB)
+Using cached huggingface_hub-2.3.0-py3-none-any.whl (855 kB)
+Using cached joblib-1.6.0-py3-none-any.whl (306 kB)
+Using cached pyyaml-6.0.3-cp313-cp313-win_amd64.whl (154 kB)
+Using cached mlflow_skinny-3.17.0-py3-none-any.whl (4.1 MB)
+Using cached mlflow_tracing-3.17.0-py3-none-any.whl (2.0 MB)
+Using cached aiohttp-3.14.5-cp313-cp313-win_amd64.whl (505 kB)
+Using cached alembic-1.20.1-py3-none-any.whl (270 kB)
+Using cached anyio-4.15.1-py3-none-any.whl (132 kB)
+Using cached cachetools-7.2.4-py3-none-any.whl (18 kB)
+Using cached click-8.5.0-py3-none-any.whl (125 kB)
+Using cached cloudpickle-3.1.2-py3-none-any.whl (22 kB)
+Using cached cryptography-50.0.2-cp311-abi3-win_amd64.whl (3.8 MB)
+Using cached databricks_sdk-0.157.0-py3-none-any.whl (1.1 MB)
+Using cached docker-7.2.0-py3-none-any.whl (148 kB)
+Using cached dpath-2.2.0-py3-none-any.whl (17 kB)
+Using cached dvc_data-3.18.3-py3-none-any.whl (79 kB)
+Using cached dvc_objects-5.2.0-py3-none-any.whl (33 kB)
+Using cached dvc_render-1.0.2-py3-none-any.whl (22 kB)
+Using cached dvc_studio_client-0.23.0-py3-none-any.whl (16 kB)
+Using cached dvc_task-0.40.2-py3-none-any.whl (21 kB)
+Using cached celery-5.6.3-py3-none-any.whl (451 kB)
+Using cached billiard-4.3.1-py3-none-any.whl (90 kB)
+Using cached fastapi-0.162.0-py3-none-any.whl (148 kB)
+Using cached flask-3.1.3-py3-none-any.whl (103 kB)
+Using cached flask_cors-6.0.5-py3-none-any.whl (16 kB)
+Using cached flatten_dict-0.5.0-py3-none-any.whl (9.9 kB)
+Using cached flufl_lock-9.2.0-py3-none-any.whl (11 kB)
+Using cached gitpython-3.2.1-py3-none-any.whl (231 kB)
+Using cached gitdb-4.0.12-py3-none-any.whl (62 kB)
+Using cached google_auth-2.62.0-py3-none-any.whl (267 kB)
+Using cached grandalf-0.8-py3-none-any.whl (41 kB)
+Using cached graphene-3.4.3-py2.py3-none-any.whl (114 kB)
+Using cached graphql_core-3.2.13-py3-none-any.whl (268 kB)
+Using cached graphql_relay-3.2.0-py3-none-any.whl (16 kB)
+Using cached gto-1.10.1-py3-none-any.whl (45 kB)
+Using cached hf_xet-1.7.0-cp38-abi3-win_amd64.whl (3.8 MB)
+Using cached httpx2-2.16.0-py3-none-any.whl (97 kB)
+Using cached httpcore2-2.16.0-py3-none-any.whl (85 kB)
+Using cached huey-3.5.3-py3-none-any.whl (139 kB)
+Using cached importlib_metadata-9.1.0-py3-none-any.whl (28 kB)
+Using cached kombu-5.6.2-py3-none-any.whl (214 kB)
+Using cached vine-5.1.0-py3-none-any.whl (9.6 kB)
+Using cached amqp-5.4.1-py3-none-any.whl (51 kB)
+Using cached matplotlib-3.11.2-cp313-cp313-win_amd64.whl (9.3 MB)
+Using cached multidict-7.2.0-cp313-cp313-win_amd64.whl (94 kB)
+Using cached opentelemetry_api-1.45.1-py3-none-any.whl (60 kB)
+Using cached opentelemetry_proto-1.45.1-py3-none-any.whl (72 kB)
+Using cached opentelemetry_sdk-1.45.1-py3-none-any.whl (140 kB)
+Using cached opentelemetry_semantic_conventions-0.66b1-py3-none-any.whl (206 kB)
+Using cached orjson-3.13.0-cp313-cp313-win_amd64.whl (121 kB)
+Using cached packaging-26.3-py3-none-any.whl (129 kB)
+Using cached pathspec-1.1.1-py3-none-any.whl (57 kB)
+Using cached platformdirs-4.13.5-py3-none-any.whl (32 kB)
+Using cached protobuf-7.36.2-cp310-abi3-win_amd64.whl (456 kB)
+Using cached pydantic-2.14.1-py3-none-any.whl (488 kB)
+Using cached pydantic_core-2.50.1-cp313-cp313-win_amd64.whl (2.2 MB)
+Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+Using cached python_dotenv-1.2.4-py3-none-any.whl (23 kB)
+Using cached requests-2.34.2-py3-none-any.whl (73 kB)
+Using cached charset_normalizer-3.5.2-cp313-cp313-win_amd64.whl (206 kB)
+Using cached idna-3.20-py3-none-any.whl (69 kB)
+Using cached scmrepo-3.6.2-py3-none-any.whl (74 kB)
+Using cached asyncssh-2.24.1-py3-none-any.whl (382 kB)
+Using cached dulwich-1.2.19-cp313-cp313-win_amd64.whl (1.1 MB)
+Using cached shtab-1.13.0-py3-none-any.whl (22 kB)
+Using cached smmap-5.0.3-py3-none-any.whl (24 kB)
+Using cached sqlalchemy-2.1.6-cp313-cp313-win_amd64.whl (2.4 MB)
+Using cached sqlparse-0.6.0-py3-none-any.whl (50 kB)
+Using cached sqltrie-0.11.3-py3-none-any.whl (17 kB)
+Using cached starlette-1.10.0-py3-none-any.whl (80 kB)
+Using cached tqdm-4.70.1-py3-none-any.whl (80 kB)
+Using cached typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+Using cached urllib3-2.8.0-py3-none-any.whl (135 kB)
+Using cached uvicorn-0.54.0-py3-none-any.whl (87 kB)
+Using cached waitress-3.0.2-py3-none-any.whl (56 kB)
+Using cached yarl-1.25.1-cp313-cp313-win_amd64.whl (101 kB)
+Using cached aiohappyeyeballs-2.7.1-py3-none-any.whl (15 kB)
+Using cached aiohttp_retry-2.9.1-py3-none-any.whl (10.0 kB)
+Using cached aiosignal-1.4.0-py3-none-any.whl (7.5 kB)
+Using cached annotated_doc-0.0.5-py3-none-any.whl (5.3 kB)
+Using cached annotated_types-0.8.0-py3-none-any.whl (13 kB)
+Using cached attrs-26.1.0-py3-none-any.whl (67 kB)
+Using cached blinker-1.9.0-py3-none-any.whl (8.5 kB)
+Using cached certifi-2026.10.23-py3-none-any.whl (135 kB)
+Using cached cffi-2.1.1-cp313-cp313-win_amd64.whl (185 kB)
+Using cached click_didyoumean-0.3.1-py3-none-any.whl (3.6 kB)
+Using cached click_plugins-1.1.1.2-py2.py3-none-any.whl (11 kB)
+Using cached click_repl-0.4.1-py3-none-any.whl (14 kB)
+Using cached colorama-0.4.6-py2.py3-none-any.whl (25 kB)
+Using cached configobj-5.0.9-py2.py3-none-any.whl (35 kB)
+Using cached contourpy-1.4.0-cp313-cp313-win_amd64.whl (234 kB)
+Using cached cycler-0.12.1-py3-none-any.whl (8.3 kB)
+Using cached dictdiffer-0.10.0-py3-none-any.whl (16 kB)
+Using cached diskcache-5.6.3-py3-none-any.whl (45 kB)
+Using cached distro-1.9.0-py3-none-any.whl (20 kB)
+Using cached dvc_http-2.32.0-py3-none-any.whl (12 kB)
+Using cached filelock-4.2.4-py3-none-any.whl (162 kB)
+Using cached fonttools-4.67.0-cp313-cp313-win_amd64.whl (2.5 MB)
+Using cached frozenlist-1.8.0-cp313-cp313-win_amd64.whl (43 kB)
+Using cached fsspec-2026.9.0-py3-none-any.whl (221 kB)
+Using cached funcy-2.1-py3-none-any.whl (29 kB)
+Using cached h11-0.16.0-py3-none-any.whl (37 kB)
+Using cached hydra_core-1.3.7-py3-none-any.whl (168 kB)
+Using cached omegaconf-2.3.1-py3-none-any.whl (79 kB)
+Using cached iterative_telemetry-0.0.10-py3-none-any.whl (10 kB)
+Using cached itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+Using cached jinja2-3.1.6-py3-none-any.whl (134 kB)
+Using cached kiwisolver-1.5.1-cp313-cp313-win_amd64.whl (70 kB)
+Using cached markupsafe-3.0.4-cp313-cp313-win_amd64.whl (14 kB)
+Using cached narwhals-2.27.1-py3-none-any.whl (483 kB)
+Using cached networkx-3.7-py3-none-any.whl (2.1 MB)
+Using cached pillow-13.0.0-cp313-cp313-win_amd64.whl (7.3 MB)
+Using cached prettytable-3.18.0-py3-none-any.whl (37 kB)
+Using cached prompt_toolkit-3.0.53-py3-none-any.whl (392 kB)
+Using cached propcache-0.5.4-cp313-cp313-win_amd64.whl (45 kB)
+Using cached psutil-7.2.2-cp37-abi3-win_amd64.whl (137 kB)
+Using cached pyasn1_modules-0.4.2-py3-none-any.whl (181 kB)
+Using cached pyasn1-0.6.4-py3-none-any.whl (84 kB)
+Using cached pydantic_settings-2.16.1-py3-none-any.whl (80 kB)
+Using cached pydot-4.0.1-py3-none-any.whl (37 kB)
+Using cached pygit2-1.20.1-cp313-cp313-win_amd64.whl (1.3 MB)
+Using cached pygtrie-2.6.2-py3-none-any.whl (33 kB)
+Using cached pyparsing-3.3.3-py3-none-any.whl (126 kB)
+Using cached pywin32-312-cp313-cp313-win_amd64.whl (6.9 MB)
+Using cached rich-15.0.0-py3-none-any.whl (310 kB)
+Using cached pygments-2.21.0-py3-none-any.whl (1.3 MB)
+Using cached markdown_it_py-4.2.0-py3-none-any.whl (91 kB)
+Using cached mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+Using cached ruamel_yaml-0.19.1-py3-none-any.whl (118 kB)
+Using cached semver-3.1.0-py3-none-any.whl (18 kB)
+Using cached shortuuid-1.0.13-py3-none-any.whl (10 kB)
+Using cached six-1.17.0-py2.py3-none-any.whl (11 kB)
+Using cached tabulate-0.10.0-py3-none-any.whl (39 kB)
+Using cached threadpoolctl-3.7.0-py3-none-any.whl (26 kB)
+Using cached tomlkit-0.15.2-py3-none-any.whl (52 kB)
+Using cached truststore-0.10.5-py3-none-any.whl (19 kB)
+Using cached typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+Using cached tzdata-2026.5-py2.py3-none-any.whl (347 kB)
+Using cached voluptuous-0.16.0-py3-none-any.whl (31 kB)
+Using cached wcwidth-0.9.4-cp310-abi3-win_amd64.whl (597 kB)
+Using cached werkzeug-3.1.9-py3-none-any.whl (228 kB)
+Using cached zc_lockfile-4.0-py3-none-any.whl (9.1 kB)
+Using cached zipp-4.1.2-py3-none-any.whl (10 kB)
+Using cached appdirs-1.4.4-py2.py3-none-any.whl (9.6 kB)
+Using cached atpublic-9.0.0-py3-none-any.whl (11 kB)
+Using cached entrypoints-0.4.2-py3-none-any.whl (5.3 kB)
+Using cached mako-1.4.3-py3-none-any.whl (80 kB)
+Using cached pycparser-3.12-py3-none-any.whl (62 kB)
+Using cached setuptools-84.2.1-py3-none-any.whl (876 kB)
+Using cached tzlocal-5.4.5-py3-none-any.whl (18 kB)
+Installing collected packages: huey, funcy, appdirs, antlr4-python3-runtime, zipp, wcwidth, waitress, voluptuous, vine, urllib3, tzdata, typing-extensions, truststore, tomlkit, threadpoolctl, tabulate, sqlparse, smmap, six, shtab, shortuuid, setuptools, semver, ruamel.yaml, PyYAML, pywin32, python-dotenv, pyparsing, pygtrie, pygments, pycparser, pyasn1, pyarrow, psutil, protobuf, propcache, platformdirs, pillow, pathspec, packaging, orjson, numpy, networkx, narwhals, multidict, mdurl, markupsafe, kiwisolver, itsdangerous, idna, hf-xet, h11, graphql-core, fsspec, frozenlist, fonttools, flatten-dict, filelock, entrypoints, dvc-render, dpath, distro, diskcache, dictdiffer, cycler, configobj, colorama, cloudpickle, click, charset_normalizer, certifi, cachetools, blinker, billiard, attrs, atpublic, annotated-types, annotated-doc, aiohappyeyeballs, zc.lockfile, yarl, werkzeug, uvicorn, tzlocal, typing-inspection, tqdm, sqltrie, sqlalchemy, scipy, requests, python-dateutil, pydot, pydantic-core, pyasn1-modules, prompt_toolkit, prettytable, opentelemetry-proto, opentelemetry-api, omegaconf, markdown-it-py, Mako, joblib, jinja2, importlib_metadata, httpcore2, graphql-relay, grandalf, gitdb, flufl.lock, dvc-objects, dulwich, contourpy, click-plugins, click-didyoumean, cffi, anyio, amqp, aiosignal, starlette, scikit-learn, rich, pygit2, pydantic, pandas, opentelemetry-semantic-conventions, matplotlib, kombu, iterative-telemetry, hydra-core, httpx2, graphene, gitpython, Flask, dvc-studio-client, dvc-data, docker, cryptography, click-repl, alembic, aiohttp, skops, pydantic-settings, opentelemetry-sdk, huggingface_hub, google-auth, Flask-CORS, fastapi, celery, asyncssh, aiohttp-retry, scmrepo, dvc-task, dvc-http, databricks-sdk, mlflow-tracing, mlflow-skinny, gto, mlflow, dvc
+
+Successfully installed Flask-3.1.3 Flask-CORS-6.0.5 Mako-1.4.3 PyYAML-6.0.3 aiohappyeyeballs-2.7.1 aiohttp-3.14.5 aiohttp-retry-2.9.1 aiosignal-1.4.0 alembic-1.20.1 amqp-5.4.1 annotated-doc-0.0.5 annotated-types-0.8.0 antlr4-python3-runtime-4.9.3 anyio-4.15.1 appdirs-1.4.4 asyncssh-2.24.1 atpublic-9.0.0 attrs-26.1.0 billiard-4.3.1 blinker-1.9.0 cachetools-7.2.4 celery-5.6.3 certifi-2026.10.23 cffi-2.1.1 charset_normalizer-3.5.2 click-8.5.0 click-didyoumean-0.3.1 click-plugins-1.1.1.2 click-repl-0.4.1 cloudpickle-3.1.2 colorama-0.4.6 configobj-5.0.9 contourpy-1.4.0 cryptography-50.0.2 cycler-0.12.1 databricks-sdk-0.157.0 dictdiffer-0.10.0 diskcache-5.6.3 distro-1.9.0 docker-7.2.0 dpath-2.2.0 dulwich-1.2.19 dvc-3.67.1 dvc-data-3.18.3 dvc-http-2.32.0 dvc-objects-5.2.0 dvc-render-1.0.2 dvc-studio-client-0.23.0 dvc-task-0.40.2 entrypoints-0.4.2 fastapi-0.162.0 filelock-4.2.4 flatten-dict-0.5.0 flufl.lock-9.2.0 fonttools-4.67.0 frozenlist-1.8.0 fsspec-2026.9.0 funcy-2.1 gitdb-4.0.12 gitpython-3.2.1 google-auth-2.62.0 grandalf-0.8 graphene-3.4.3 graphql-core-3.2.13 graphql-relay-3.2.0 gto-1.10.1 h11-0.16.0 hf-xet-1.7.0 httpcore2-2.16.0 httpx2-2.16.0 huey-3.5.3 huggingface_hub-2.3.0 hydra-core-1.3.7 idna-3.20 importlib_metadata-9.1.0 iterative-telemetry-0.0.10 itsdangerous-2.2.0 jinja2-3.1.6 joblib-1.6.0 kiwisolver-1.5.1 kombu-5.6.2 markdown-it-py-4.2.0 markupsafe-3.0.4 matplotlib-3.11.2 mdurl-0.1.2 mlflow-3.17.0 mlflow-skinny-3.17.0 mlflow-tracing-3.17.0 multidict-7.2.0 narwhals-2.27.1 networkx-3.7 numpy-2.5.3 omegaconf-2.3.1 opentelemetry-api-1.45.1 opentelemetry-proto-1.45.1 opentelemetry-sdk-1.45.1 opentelemetry-semantic-conventions-0.66b1 orjson-3.13.0 packaging-26.3 pandas-3.0.5 pathspec-1.1.1 pillow-13.0.0 platformdirs-4.13.5 prettytable-3.18.0 prompt_toolkit-3.0.53 propcache-0.5.4 protobuf-7.36.2 psutil-7.2.2 pyarrow-25.0.1 pyasn1-0.6.4 pyasn1-modules-0.4.2 pycparser-3.12 pydantic-2.14.1 pydantic-core-2.50.1 pydantic-settings-2.16.1 pydot-4.0.1 pygit2-1.20.1 pygments-2.21.0 pygtrie-2.6.2 pyparsing-3.3.3 python-dateutil-2.9.0.post0 python-dotenv-1.2.4 pywin32-312 requests-2.34.2 rich-15.0.0 ruamel.yaml-0.19.1 scikit-learn-1.9.1 scipy-1.18.1 scmrepo-3.6.2 semver-3.1.0 setuptools-84.2.1 shortuuid-1.0.13 shtab-1.13.0 six-1.17.0 skops-0.16.0 smmap-5.0.3 sqlalchemy-2.1.6 sqlparse-0.6.0 sqltrie-0.11.3 starlette-1.10.0 tabulate-0.10.0 threadpoolctl-3.7.0 tomlkit-0.15.2 tqdm-4.70.1 truststore-0.10.5 typing-extensions-4.16.0 typing-inspection-0.4.4 tzdata-2026.5 tzlocal-5.4.5 urllib3-2.8.0 uvicorn-0.54.0 vine-5.1.0 voluptuous-0.16.0 waitress-3.0.2 wcwidth-0.9.4 werkzeug-3.1.9 yarl-1.25.1 zc.lockfile-4.0 zipp-4.1.2
+
+
+=== 2c. Versiones instaladas ===
+$ ~\recuperacion-defiende-20261024-144645\venv\Scripts\python.exe -m pip freeze
+(cwd: proyecto; 2.9 s; código de salida 0)
+aiohappyeyeballs==2.7.1
+aiohttp==3.14.5
+aiohttp-retry==2.9.1
+aiosignal==1.4.0
+alembic==1.20.1
+amqp==5.4.1
+annotated-doc==0.0.5
+annotated-types==0.8.0
+antlr4-python3-runtime==4.9.3
+anyio==4.15.1
+appdirs==1.4.4
+asyncssh==2.24.1
+atpublic==9.0.0
+attrs==26.1.0
+billiard==4.3.1
+blinker==1.9.0
+cachetools==7.2.4
+celery==5.6.3
+certifi==2026.10.23
+cffi==2.1.1
+charset-normalizer==3.5.2
+click==8.5.0
+click-didyoumean==0.3.1
+click-plugins==1.1.1.2
+click-repl==0.4.1
+cloudpickle==3.1.2
+colorama==0.4.6
+configobj==5.0.9
+contourpy==1.4.0
+cryptography==50.0.2
+cycler==0.12.1
+databricks-sdk==0.157.0
+dictdiffer==0.10.0
+diskcache==5.6.3
+distro==1.9.0
+docker==7.2.0
+dpath==2.2.0
+dulwich==1.2.19
+dvc==3.67.1
+dvc-data==3.18.3
+dvc-http==2.32.0
+dvc-objects==5.2.0
+dvc-render==1.0.2
+dvc-studio-client==0.23.0
+dvc-task==0.40.2
+entrypoints==0.4.2
+fastapi==0.162.0
+filelock==4.2.4
+Flask==3.1.3
+flask-cors==6.0.5
+flatten-dict==0.5.0
+flufl.lock==9.2.0
+fonttools==4.67.0
+frozenlist==1.8.0
+fsspec==2026.9.0
+funcy==2.1
+gitdb==4.0.12
+GitPython==3.2.1
+google-auth==2.62.0
+grandalf==0.8
+graphene==3.4.3
+graphql-core==3.2.13
+graphql-relay==3.2.0
+gto==1.10.1
+h11==0.16.0
+hf-xet==1.7.0
+httpcore2==2.16.0
+httpx2==2.16.0
+huey==3.5.3
+huggingface_hub==2.3.0
+hydra-core==1.3.7
+idna==3.20
+importlib_metadata==9.1.0
+iterative-telemetry==0.0.10
+itsdangerous==2.2.0
+Jinja2==3.1.6
+joblib==1.6.0
+kiwisolver==1.5.1
+kombu==5.6.2
+Mako==1.4.3
+markdown-it-py==4.2.0
+MarkupSafe==3.0.4
+matplotlib==3.11.2
+mdurl==0.1.2
+mlflow==3.17.0
+mlflow-skinny==3.17.0
+mlflow-tracing==3.17.0
+multidict==7.2.0
+narwhals==2.27.1
+networkx==3.7
+numpy==2.5.3
+omegaconf==2.3.1
+opentelemetry-api==1.45.1
+opentelemetry-proto==1.45.1
+opentelemetry-sdk==1.45.1
+opentelemetry-semantic-conventions==0.66b1
+orjson==3.13.0
+packaging==26.3
+pandas==3.0.5
+pathspec==1.1.1
+pillow==13.0.0
+platformdirs==4.13.5
+prettytable==3.18.0
+prompt_toolkit==3.0.53
+propcache==0.5.4
+protobuf==7.36.2
+psutil==7.2.2
+pyarrow==25.0.1
+pyasn1==0.6.4
+pyasn1_modules==0.4.2
+pycparser==3.12
+pydantic==2.14.1
+pydantic-settings==2.16.1
+pydantic_core==2.50.1
+pydot==4.0.1
+pygit2==1.20.1
+Pygments==2.21.0
+pygtrie==2.6.2
+pyparsing==3.3.3
+python-dateutil==2.9.0.post0
+python-dotenv==1.2.4
+pywin32==312
+PyYAML==6.0.3
+requests==2.34.2
+rich==15.0.0
+ruamel.yaml==0.19.1
+scikit-learn==1.9.1
+scipy==1.18.1
+scmrepo==3.6.2
+semver==3.1.0
+setuptools==84.2.1
+shortuuid==1.0.13
+shtab==1.13.0
+six==1.17.0
+skops==0.16.0
+smmap==5.0.3
+SQLAlchemy==2.1.6
+sqlparse==0.6.0
+sqltrie==0.11.3
+starlette==1.10.0
+tabulate==0.10.0
+threadpoolctl==3.7.0
+tomlkit==0.15.2
+tqdm==4.70.1
+truststore==0.10.5
+typing-inspection==0.4.4
+typing_extensions==4.16.0
+tzdata==2026.5
+tzlocal==5.4.5
+urllib3==2.8.0
+uvicorn==0.54.0
+vine==5.1.0
+voluptuous==0.16.0
+waitress==3.0.2
+wcwidth==0.9.4
+Werkzeug==3.1.9
+yarl==1.25.1
+zc.lockfile==4.0
+zipp==4.1.2
+
+
+=== 3. Recuperar con DVC datos originales, preparados y modelos ===
+$ ~\recuperacion-defiende-20261024-144645\venv\Scripts\python.exe -m dvc pull data/raw/UNSW_NB15_training-set.csv.dvc data/raw/UNSW_NB15_testing-set.csv.dvc prepare release_v1 release_v2
+(cwd: proyecto; 9.0 s; código de salida 0)
+A       models\releases\v1\
+A       models\releases\v2\
+A       data\processed\split_assignment.csv
+A       data\processed\train.parquet
+A       data\processed\val.parquet
+A       data\raw\UNSW_NB15_testing-set.csv
+A       data\raw\UNSW_NB15_training-set.csv
+12 files fetched and 11 files added
+
+
+=== 4. Verificar huellas SHA-256 ===
+$ ~\recuperacion-defiende-20261024-144645\venv\Scripts\python.exe -m src.cli verificar
+(cwd: proyecto; 13.7 s; código de salida 0)
+OK      original/UNSW_NB15_training-set.csv                     bec7dd5ec88dc2a0ccc7a07879d338395ed7421750f675fd0339e07dfe0648fa
+OK      original/UNSW_NB15_testing-set.csv                      734fe6642edf758f7c94d7d9149426b49d202fe8e7bf0bef47392489c3c0a559
+OK      preparado/train.parquet                                 a37aff7df3de8217800c1736bc4c8ad8ffa6243c93944f27d854088ba1277bd4
+OK      preparado/val.parquet                                   6a3e85ad4a63017a51ce84ae8967badae7a8dba47980572731b9aab9a3936976
+OK      preparado/split_assignment.csv                          ebbfebba19427447215c648187dc32fe9b75e3fd3b06bc0f9cb6ae571992968a
+OK      modelo/v1/modelo.skops                                  1b7fc9ed8ed2e86c7ab8ea47a6c16e6d1fdee37e5bbc5c489cbf6802b1c291d3
+OK      modelo/v2/modelo.skops                                  3e4ade35db97b10a53a0193361a824a700166db35b4854891fa04488ea6b36e8
+RESULTADO: todas las huellas coinciden
+
+
+=== 5. Descargar v1 de Hugging Face por SHA 3c9aabf11b57387f55d07261458c574f241be34c ===
+$ ~\recuperacion-defiende-20261024-144645\venv\Scripts\python.exe -c from src.predict import descargar; print(descargar('3c9aabf11b57387f55d07261458c574f241be34c', 'C:\\Users\\SANTIAGO_Y _SAMUEL\\recuperacion-defiende-20261024-144645\\hf\\v1'))
+(cwd: proyecto; 5.4 s; código de salida 0)
+~\recuperacion-defiende-20261024-144645\hf\v1
+
+Fetching 5 files:   0%|          | 0/5 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+Fetching 5 files:  20%|██        | 1/5 [00:00<00:01,  3.70it/s]
+Fetching 5 files:  80%|████████  | 4/5 [00:00<00:00,  8.81it/s]
+Fetching 5 files: 100%|██████████| 5/5 [00:01<00:00,  3.22it/s]
+Fetching 5 files: 100%|██████████| 5/5 [00:01<00:00,  3.78it/s]
+
+
+=== 5b. Predecir con v1 sobre las entradas fijas ===
+$ ~\recuperacion-defiende-20261024-144645\venv\Scripts\python.exe -m src.predict --release ~\recuperacion-defiende-20261024-144645\hf\v1 --input ~\recuperacion-defiende-20261024-144645\proyecto\evidencias\recuperacion\entradas_validacion.csv --output ~\recuperacion-defiende-20261024-144645\proyecto\evidencias\recuperacion\salida_despues_v1.csv
+(cwd: proyecto; 3.6 s; código de salida 0)
+
+
+=== 5. Descargar v2 de Hugging Face por SHA 3639b0994cd1493723b8d8899f0e8311d9c798c3 ===
+$ ~\recuperacion-defiende-20261024-144645\venv\Scripts\python.exe -c from src.predict import descargar; print(descargar('3639b0994cd1493723b8d8899f0e8311d9c798c3', 'C:\\Users\\SANTIAGO_Y _SAMUEL\\recuperacion-defiende-20261024-144645\\hf\\v2'))
+(cwd: proyecto; 4.4 s; código de salida 0)
+~\recuperacion-defiende-20261024-144645\hf\v2
+
+Fetching 5 files:   0%|          | 0/5 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+Fetching 5 files:  20%|██        | 1/5 [00:00<00:00,  4.08it/s]
+Fetching 5 files:  60%|██████    | 3/5 [00:00<00:00,  7.20it/s]
+Fetching 5 files: 100%|██████████| 5/5 [00:01<00:00,  3.70it/s]
+Fetching 5 files: 100%|██████████| 5/5 [00:01<00:00,  4.04it/s]
+
+
+=== 5b. Predecir con v2 sobre las entradas fijas ===
+$ ~\recuperacion-defiende-20261024-144645\venv\Scripts\python.exe -m src.predict --release ~\recuperacion-defiende-20261024-144645\hf\v2 --input ~\recuperacion-defiende-20261024-144645\proyecto\evidencias\recuperacion\entradas_validacion.csv --output ~\recuperacion-defiende-20261024-144645\proyecto\evidencias\recuperacion\salida_despues_v2.csv
+(cwd: proyecto; 2.9 s; código de salida 0)
+
